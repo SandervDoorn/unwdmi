@@ -1,33 +1,53 @@
 package Threading;
 
+import Parsing.XMLParser;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class HandleRequestThread implements Runnable {
-    private String input;
-    private PrintWriter writer;
     private BufferedReader in;
+    private Socket socket;
+    private LinkedBlockingQueue<JSONObject> queue;
 
-    public HandleRequestThread(Socket clientSocket) throws IOException {
+    /**
+     * @param clientSocket
+     * @param XMLQueue
+     * @throws IOException
+     */
+    public HandleRequestThread(Socket clientSocket, LinkedBlockingQueue<JSONObject> XMLQueue) throws IOException {
+        this.socket = clientSocket;
         this.in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        this.writer = new PrintWriter(clientSocket.getOutputStream(), false);
+        this.queue = XMLQueue;
     }
 
     @Override
     public void run() {
+        StringBuilder XMLElement = new StringBuilder();
+        //TODO remove the test variable when done
+        int test = 0;
+
         try {
-            char[] buffer = new char[2048];
-            int test;
-            while ((test = this.in.read()) != -1) {
-                System.out.println(test);
+            String xmlLine;
+            while (this.socket.isConnected() && test < 10) {
+                xmlLine = this.in.readLine();
+                XMLElement.append(xmlLine);
+                if (xmlLine.equals("</WEATHERDATA>")) {
+                    XMLParser XMLParser = new XMLParser(XMLElement.toString());
+
+                    //end xml element and add it to queue
+                    queue.put(XMLParser.parseXML());
+                    XMLElement = new StringBuilder();
+                    test++;
+                }
             }
-            while ((this.input = this.in.readLine()) != null) {
-                this.writer.println(this.input.toUpperCase());
-            }
-        } catch (IOException e) {
+            System.out.println(queue);
+            System.exit(1);
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
