@@ -1,4 +1,5 @@
 # Ignore .idea
 .idea/*
-
+out/
+src/PrimeSearch/
 .iml
