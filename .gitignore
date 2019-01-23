@@ -2,3 +2,7 @@
 .idea/*
 
 .iml
+
+# Ignore local folders and files
+backend/
+json-testfiles/
