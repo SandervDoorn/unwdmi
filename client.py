@@ -5,5 +5,15 @@ PORT = 65456
 
 with socket(AF_INET, SOCK_STREAM) as s:
     s.connect((HOST, PORT))
-    s.sendall(b'{"station": 123456}')
+    examplejson = """{
+    "station": 123456,
+	"measurement": {
+		"time": "15:01",
+		"date": "21-01-19",
+		"temperature": "21",
+		"humidity": "10",
+		"dewpoint": "15"
+	}
+    }"""
+    s.sendall(examplejson.encode())
 

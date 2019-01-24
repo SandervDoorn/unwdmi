@@ -9,7 +9,11 @@ import os
 
 def from_stream(data):
     x = json.loads(data)
-    print(x["station"])
+
+    create_folder(str(x["station"]))
+    measurement = x["measurement"]
+    filepath = "json-testfiles/" + str(x["station"]) + "/" + measurement["date"] + ".csv"
+    add_to_csv(measurement, filepath)
 
 
 def from_file(filepath):
@@ -52,6 +56,4 @@ def add_to_csv(measurement, file):
                          measurement['humidity'],
                          measurement['dewpoint']])
 
-
-from_file("json-testfiles/dataformat.json")
 
