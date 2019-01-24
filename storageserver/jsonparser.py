@@ -12,7 +12,7 @@ def from_stream(data):
 
     create_folder(str(x["station"]))
     measurement = x["measurement"]
-    filepath = "json-testfiles/" + str(x["station"]) + "/" + measurement["date"] + ".csv"
+    filepath = "storageserver/json-testfiles/" + str(x["station"]) + "/" + measurement["date"] + ".csv"
     add_to_csv(measurement, filepath)
 
 
@@ -26,13 +26,13 @@ def from_file(filepath):
     create_folder(str(j["station"]))
 
     measurement = j["measurement"]
-    filepath = "json-testfiles/" + str(j["station"]) + "/" + measurement["date"] + ".csv"
+    filepath = "storageserver/json-testfiles/" + str(j["station"]) + "/" + measurement["date"] + ".csv"
 
     add_to_csv(measurement, filepath)
 
 
 def create_folder(station_id):
-    path = "json-testfiles/" + station_id
+    path = "storageserver/json-testfiles/" + station_id
     permissions = 0o755
     if not os.path.isdir(path):
         os.mkdir(path, permissions)

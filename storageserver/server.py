@@ -1,5 +1,5 @@
 from socket import *
-import jsonparser
+from storageserver import jsonparser
 
 HOST = '127.0.0.1'
 PORT = 65456
