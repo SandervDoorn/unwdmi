@@ -35,18 +35,27 @@ public class HandleRequestThread implements Runnable {
             String xmlLine;
             while (this.socket.isConnected() && test < 10) {
                 xmlLine = this.in.readLine();
-                XMLElement.append(xmlLine);
-                if (xmlLine.equals("</WEATHERDATA>")) {
-                    XMLParser XMLParser = new XMLParser(XMLElement.toString());
 
-                    //end xml element and add it to queue
-                    queue.put(XMLParser.parseXML());
-                    XMLElement = new StringBuilder();
-                    test++;
+                if (xmlLine != null) {
+                    XMLElement.append(xmlLine);
+                    if (xmlLine.equals("</WEATHERDATA>")) {
+                        XMLParser XMLParser = new XMLParser(XMLElement.toString());
+
+                        //end xml element and add it to queue
+                        JSONObject result = XMLParser.parseXML();
+                        if (result.length() > 0) {
+                            queue.put(XMLParser.parseXML());
+                        }
+                        XMLElement = new StringBuilder();
+                        test++;
+                    }
+                } else {
+//                    this.in.close();
+//                    this.socket.close();
                 }
             }
-            System.out.println(queue);
-            System.exit(1);
+//            System.out.println(queue);
+//            System.exit(1);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
