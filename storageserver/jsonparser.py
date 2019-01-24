@@ -13,12 +13,14 @@ settings = config['lacthosa']
 
 
 def from_stream(data):
+    if not data:
+        return
     x = json.loads(data)
-
-    create_folder(str(x["station"]))
-    measurement = x["measurement"]
-    filepath = settings['filepath'] + str(x["station"]) + "/" + measurement["date"] + ".csv"
-    add_to_csv(measurement, filepath)
+    for i in x:
+        create_folder(str(i["station"]))
+        measurement = i["measurement"]
+        filepath = settings['filepath'] + str(i["station"]) + "/" + measurement["date"] + ".csv"
+        add_to_csv(measurement, filepath)
 
 
 def from_file(filepath):
