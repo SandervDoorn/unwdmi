@@ -1,8 +1,12 @@
 from socket import *
 from storageserver import jsonparser
+import configparser
 
-HOST = '127.0.0.1'
-PORT = 65456
+config = configparser.ConfigParser()
+config.read("config.ini")
+
+HOST = config['lacthosa']['host']
+PORT = int(config['lacthosa']['port'])
 
 with socket(AF_INET, SOCK_STREAM) as s:
     s.bind((HOST, PORT))

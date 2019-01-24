@@ -5,6 +5,11 @@ This code might be moved to a different location. It is purely for initial devel
 import json
 import csv
 import os
+import configparser
+
+config = configparser.ConfigParser()
+config.read("config.ini")
+settings = config['lacthosa']
 
 
 def from_stream(data):
@@ -12,7 +17,7 @@ def from_stream(data):
 
     create_folder(str(x["station"]))
     measurement = x["measurement"]
-    filepath = "storageserver/json-testfiles/" + str(x["station"]) + "/" + measurement["date"] + ".csv"
+    filepath = settings['filepath'] + str(x["station"]) + "/" + measurement["date"] + ".csv"
     add_to_csv(measurement, filepath)
 
 
@@ -26,13 +31,13 @@ def from_file(filepath):
     create_folder(str(j["station"]))
 
     measurement = j["measurement"]
-    filepath = "storageserver/json-testfiles/" + str(j["station"]) + "/" + measurement["date"] + ".csv"
+    filepath = settings['filepath'] + str(j["station"]) + "/" + measurement["date"] + ".csv"
 
     add_to_csv(measurement, filepath)
 
 
 def create_folder(station_id):
-    path = "storageserver/json-testfiles/" + station_id
+    path = settings['filepath'] + station_id
     permissions = 0o755
     if not os.path.isdir(path):
         os.mkdir(path, permissions)
@@ -55,5 +60,6 @@ def add_to_csv(measurement, file):
                          measurement['temperature'],
                          measurement['humidity'],
                          measurement['dewpoint']])
+
 
 
