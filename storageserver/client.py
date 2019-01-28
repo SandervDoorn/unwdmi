@@ -1,6 +1,5 @@
 from socket import *
 import configparser
-import time
 
 config = configparser.ConfigParser()
 config.read("config.ini")
