@@ -1,5 +1,6 @@
 from socket import *
 import ssl
+import _ssl
 from storageserver import jsonparser
 import configparser
 
@@ -8,9 +9,8 @@ config.read("config.ini")
 
 HOST = config['lacthosa']['host']
 PORT = int(config['lacthosa']['port'])
-context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+context = ssl.SSLContext(_ssl.PROTOCOL_TLSv1_2)
 context.load_cert_chain('certificates/lacthosa.crt', 'certificates/lacthosa.key')
-
 
 while True:
     with socket(AF_INET, SOCK_STREAM) as s:

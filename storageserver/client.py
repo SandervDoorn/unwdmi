@@ -1,5 +1,6 @@
 from socket import *
 import ssl
+import _ssl
 import configparser
 
 config = configparser.ConfigParser()
@@ -7,7 +8,7 @@ config.read("config.ini")
 
 HOST = config['lacthosa']['host']
 PORT = int(config['lacthosa']['port'])
-context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+context = ssl.SSLContext(_ssl.PROTOCOL_TLSv1_2)
 context.load_verify_locations('certificates/lacthosa.crt')
 
 with socket(AF_INET, SOCK_STREAM) as s:
