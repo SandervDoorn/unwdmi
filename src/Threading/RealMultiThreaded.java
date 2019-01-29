@@ -20,10 +20,12 @@ public class RealMultiThreaded {
     public static void main (String[] args) throws Exception
     {
         LinkedBlockingQueue<JSONObject> XMLQueue = new LinkedBlockingQueue<>();
-        DataSaver dataServer = new DataSaver("52.166.192.171", 443);
+//        DataSaver dataServer = new DataSaver("52.166.192.171", 443);
+        DataSaver dataServer = new DataSaver("192.168.1.21", 443);
 
-//        Boolean error = dataServer.connectToDataServer();
-        Boolean error = false;
+        Boolean error = dataServer.connectToDataServer();
+//        Boolean error = false;
+        System.out.println(error);
 
         if (!error) {
             try (
@@ -32,6 +34,7 @@ public class RealMultiThreaded {
                 while (true) {
                     Socket clientSocket = serverSocket.accept();
                     threadPool.execute(new HandleRequestThread(clientSocket, XMLQueue));
+
                     if (XMLQueue.size() > 50) {
                         JSONObject json =  XMLQueue.take();
 
@@ -40,6 +43,7 @@ public class RealMultiThreaded {
 //                            file.write(json.toString() + "\n");
 //                        }
 
+                        System.out.println(json);
                         Boolean result = dataServer.sendJsonToDataServer(json);
 
                         if (!result) {

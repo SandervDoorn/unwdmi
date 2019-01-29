@@ -36,17 +36,17 @@ public class DataSaver {
             this.socket = socket;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public boolean sendJsonToDataServer(JSONObject json) throws Exception
     {
         try {
             //TOOD
-            out.println("GET / HTTP/1.0");
+            out.println(json);
             out.println();
             out.flush();
 
@@ -55,17 +55,17 @@ public class DataSaver {
                         "SSLSocketClient:  java.io.PrintWriter error");
 
                 /* read response */
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(
-                            socket.getInputStream()));
+//            BufferedReader in = new BufferedReader(
+//                    new InputStreamReader(
+//                            socket.getInputStream()));
+//
+//            String inputLine;
+//            while ((inputLine = in.readLine()) != null)
+//                System.out.println(inputLine);
 
-            String inputLine;
-            while ((inputLine = in.readLine()) != null)
-                System.out.println(inputLine);
-
-            in.close();
-            out.close();
-            socket.close();
+//            in.close();
+//            out.close();
+//            socket.close();
 
         } catch (Exception e) {
 

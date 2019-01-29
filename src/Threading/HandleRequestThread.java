@@ -33,7 +33,7 @@ public class HandleRequestThread implements Runnable {
 
         try {
             String xmlLine;
-            while (this.socket.isConnected() && test < 10) {
+            while (this.socket.isConnected()) {
                 xmlLine = this.in.readLine();
 
                 if (xmlLine != null) {
@@ -43,9 +43,19 @@ public class HandleRequestThread implements Runnable {
 
                         //end xml element and add it to queue
                         JSONObject result = XMLParser.parseXML();
+
+//                        JSONObject testJson = new JSONObject();
+//                        try {
+//                            testJson.put("station", 1);
+//                        } catch (Exception ex) {
+//
+//                        }
+//                        queue.put(testJson);
+
                         if (result.length() > 0) {
                             queue.put(XMLParser.parseXML());
                         }
+
                         XMLElement = new StringBuilder();
                         test++;
                     }

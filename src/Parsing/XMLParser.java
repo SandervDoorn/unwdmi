@@ -57,7 +57,6 @@ public class XMLParser {
                             .item(0).getChildNodes().item(0).getNodeValue());
 
                     if (Arrays.asList(XMLParser.RELEVANT_STATIONS).contains(stationCode)) {
-
                         String date = element.getElementsByTagName("DATE")
                                 .item(0).getChildNodes().item(0).getNodeValue();
 
@@ -88,8 +87,9 @@ public class XMLParser {
                         jsonSubset.put("TEMP", temperature);
                         jsonSubset.put("DEWP", dewpoint);
                         jsonSubset.put("HUM", humidity);
-
+                        System.out.println(jsonSubset.toString());
                         json.put(stationCode.toString(), jsonSubset);
+                        System.out.println(json);
                     }
                 }
             }
@@ -159,9 +159,9 @@ public class XMLParser {
 
         }
 
-        this.wait();
+//        this.wait();
         list.add(value);
-        this.notifyAll();
+//        this.notifyAll();
     }
 
     /**
