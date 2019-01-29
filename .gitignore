@@ -3,3 +3,8 @@
 out/
 src/PrimeSearch/
 .iml
+
+# Ignore local folders and files
+backend/
+json-testfiles/
+storageserver/__pycache__
