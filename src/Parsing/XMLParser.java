@@ -63,6 +63,7 @@ public class XMLParser {
                             .item(0).getChildNodes().item(0).getNodeValue());
 
                     if (Arrays.asList(XMLParser.RELEVANT_STATIONS).contains(stationCode)) {
+                        //TODO fix not only missing values but deviation too
                         String date = element.getElementsByTagName("DATE")
                                 .item(0).getChildNodes().item(0).getNodeValue();
 
