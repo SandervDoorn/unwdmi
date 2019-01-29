@@ -25,6 +25,8 @@ while True:
                         data = conn.recv(2048)
                         if not data:
                             break
+                        print("Received dataline: ")
+                        print(data.decode())
                         jsonparser.from_stream(data.decode())
             except ConnectionResetError:
                 print("Connection terminated unexpectedly, closing socket...")
