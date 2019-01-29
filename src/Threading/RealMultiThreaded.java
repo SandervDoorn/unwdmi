@@ -3,9 +3,9 @@ package Threading;
 import DataSaving.DataSaver;
 import org.json.JSONObject;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.net.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -25,31 +25,18 @@ public class RealMultiThreaded {
 
         Boolean error = dataServer.connectToDataServer();
 //        Boolean error = false;
-        System.out.println(error);
+        QueueThread queueThread = new QueueThread(XMLQueue, dataServer);
+        queueThread.start();
 
         if (!error) {
             try (
+                    //Socket the generator is on
                     ServerSocket serverSocket = new ServerSocket(7789)
             ) {
                 while (true) {
                     Socket clientSocket = serverSocket.accept();
+
                     threadPool.execute(new HandleRequestThread(clientSocket, XMLQueue));
-
-                    if (XMLQueue.size() > 50) {
-                        JSONObject json =  XMLQueue.take();
-
-//                        try (FileWriter file = new FileWriter("/home/martin/Documents/dikkeshit.txt")) {
-//                            System.out.println(json.toString());
-//                            file.write(json.toString() + "\n");
-//                        }
-
-                        System.out.println(json);
-                        Boolean result = dataServer.sendJsonToDataServer(json);
-
-                        if (!result) {
-                            XMLQueue.put(json);
-                        }
-                    }
                 }
 
             } catch (IOException ex) {

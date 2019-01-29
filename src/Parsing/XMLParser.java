@@ -1,6 +1,5 @@
 package Parsing;
 
-import jdk.nashorn.api.scripting.JSObject;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -11,7 +10,6 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
-import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,17 +33,16 @@ public class XMLParser {
      *
      * @return JSONObject
      */
-    public JSONObject parseXML()
+    public JSONObject parseXML() throws Exception
     {
-        JSONObject json = new JSONObject();
+        JSONObject container = new JSONObject();
+        ArrayList<JSONObject> json = new ArrayList<>();
 
         try {
             Document xmlFile = this.getXMLFromString(this.xml);
             NodeList nodeList = xmlFile.getDocumentElement().getChildNodes();
 
             for (int i = 0; i < nodeList.getLength() - 1; i ++) {
-
-                //check of is wel ehh goeiiie code met csv
                 Node node =  nodeList.item(i);
 
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -53,14 +50,20 @@ public class XMLParser {
                     Double temperature;
                     Double dewpoint;
 
+                    String time = element.getElementsByTagName("TIME")
+                            .item(0).getChildNodes().item(0).getNodeValue();
+                    String lastTwo = time.substring(time.length() - 2);
+
+                    //We only send parse and send data every 10 seconds, check for it here
+                    if (Integer.parseInt(lastTwo) % 10 != 0) {
+                        return null;
+                    }
+
                     Integer stationCode = Integer.parseInt(element.getElementsByTagName("STN")
                             .item(0).getChildNodes().item(0).getNodeValue());
 
                     if (Arrays.asList(XMLParser.RELEVANT_STATIONS).contains(stationCode)) {
                         String date = element.getElementsByTagName("DATE")
-                                .item(0).getChildNodes().item(0).getNodeValue();
-
-                        date = date + " " + element.getElementsByTagName("TIME")
                                 .item(0).getChildNodes().item(0).getNodeValue();
 
                         if (element.getElementsByTagName("DEWP").item(0).getChildNodes().item(0) != null) {
@@ -81,15 +84,19 @@ public class XMLParser {
 
                         Double humidity = this.calculateHumidity(dewpoint, temperature);
 
-                        JSONObject jsonSubset = new JSONObject();
+                        JSONObject jsonElement = new JSONObject();
+                        JSONObject measurement = new JSONObject();
 
-                        jsonSubset.put("DATE", date);
-                        jsonSubset.put("TEMP", temperature);
-                        jsonSubset.put("DEWP", dewpoint);
-                        jsonSubset.put("HUM", humidity);
-                        System.out.println(jsonSubset.toString());
-                        json.put(stationCode.toString(), jsonSubset);
-                        System.out.println(json);
+                        jsonElement.put("station", stationCode);
+
+                        measurement.put("date", date);
+                        measurement.put("time", time);
+                        measurement.put("temp", temperature);
+                        measurement.put("dewp", dewpoint);
+                        measurement.put("hum", humidity);
+                        jsonElement.put("measurement", measurement);
+
+                        json.add(jsonElement);
                     }
                 }
             }
@@ -97,7 +104,11 @@ public class XMLParser {
             ex.printStackTrace();
         }
 
-        return json;
+        if (json.size() > 0) {
+            return container.put("items",json);
+        } else {
+            return null;
+        }
     }
 
     /**

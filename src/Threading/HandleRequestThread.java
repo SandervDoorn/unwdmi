@@ -28,11 +28,10 @@ public class HandleRequestThread implements Runnable {
     @Override
     public void run() {
         StringBuilder XMLElement = new StringBuilder();
-        //TODO remove the test variable when done
-        int test = 0;
 
         try {
             String xmlLine;
+
             while (this.socket.isConnected()) {
                 xmlLine = this.in.readLine();
 
@@ -40,32 +39,23 @@ public class HandleRequestThread implements Runnable {
                     XMLElement.append(xmlLine);
                     if (xmlLine.equals("</WEATHERDATA>")) {
                         XMLParser XMLParser = new XMLParser(XMLElement.toString());
+                        JSONObject result = new JSONObject();
+                        try {
+                            //end xml element and add it to queue
+                            result = XMLParser.parseXML();
+                        } catch (Exception ex) {
+                            System.out.print(ex.getMessage());
+                        }
 
-                        //end xml element and add it to queue
-                        JSONObject result = XMLParser.parseXML();
-
-//                        JSONObject testJson = new JSONObject();
-//                        try {
-//                            testJson.put("station", 1);
-//                        } catch (Exception ex) {
-//
-//                        }
-//                        queue.put(testJson);
-
-                        if (result.length() > 0) {
-                            queue.put(XMLParser.parseXML());
+                        if (result != null && result.length() > 0) {
+                            queue.put(result);
                         }
 
                         XMLElement = new StringBuilder();
-                        test++;
                     }
-                } else {
-//                    this.in.close();
-//                    this.socket.close();
                 }
             }
-//            System.out.println(queue);
-//            System.exit(1);
+
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }

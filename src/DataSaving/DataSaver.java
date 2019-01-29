@@ -5,19 +5,31 @@ import org.json.JSONObject;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
+import java.util.ArrayList;
 
 public class DataSaver {
     private String dataserverAddress;
     private Integer dataserverPort;
     private PrintWriter out;
-    private SSLSocket socket;
 
+    /**
+     * DataSaver constructor
+     *
+     * @param dataserverAddress
+     * @param dataserverPort
+     */
     public DataSaver(String dataserverAddress, Integer dataserverPort)
     {
         this.dataserverAddress = dataserverAddress;
         this.dataserverPort = dataserverPort;
     }
 
+    /**
+     * Starts a secure SSL connection with specified server
+     *
+     * @return bool
+     * @throws Exception
+     */
     public boolean connectToDataServer() throws Exception {
         try {
             SSLSocketFactory factory =
@@ -33,7 +45,6 @@ public class DataSaver {
                                     socket.getOutputStream())));
 
             this.out = out;
-            this.socket = socket;
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return true;
@@ -42,30 +53,23 @@ public class DataSaver {
         return false;
     }
 
-    public boolean sendJsonToDataServer(JSONObject json) throws Exception
+    /**
+     * Sends JSON to the dataserver
+     *
+     * @param json
+     * @return
+     * @throws Exception
+     */
+    public boolean sendJsonToDataServer(ArrayList<JSONObject> json) throws Exception
     {
         try {
-            //TOOD
-            out.println(json);
+            out.println(json.get(0));
             out.println();
             out.flush();
 
             if (out.checkError())
                 System.out.println(
-                        "SSLSocketClient:  java.io.PrintWriter error");
-
-                /* read response */
-//            BufferedReader in = new BufferedReader(
-//                    new InputStreamReader(
-//                            socket.getInputStream()));
-//
-//            String inputLine;
-//            while ((inputLine = in.readLine()) != null)
-//                System.out.println(inputLine);
-
-//            in.close();
-//            out.close();
-//            socket.close();
+                        "Something went wrong with sending data to server");
 
         } catch (Exception e) {
 
