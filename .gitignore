@@ -1,6 +1,7 @@
 # Ignore .idea
 .idea/*
-
+out/
+src/PrimeSearch/
 .iml
 
 # Ignore local folders and files
