@@ -1,3 +1,6 @@
+"""
+weatherstation socket tester file
+"""
 from socket import *
 import ssl
 import _ssl
