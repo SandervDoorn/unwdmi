@@ -68,13 +68,17 @@ public class XMLParser {
                         if (element.getElementsByTagName("TEMP").item(0).getChildNodes().item(0) != null) {
                             temperature = Double.parseDouble(this.getValueFromElement("TEMP", element));
                         }
-                        temperature = this.updatePreviousMeasurements("TEMP", temperature);
+
+                        temperature = this.roundNumber(this.updatePreviousMeasurements("TEMP", temperature));
+
                         if (element.getElementsByTagName("DEWP").item(0).getChildNodes().item(0) != null) {
                             dewpoint = Double.parseDouble(this.getValueFromElement("DEWP", element));
                         }
+
                         dewpoint = this.updatePreviousMeasurements("DEWP", dewpoint);
 
                         Double humidity = this.calculateHumidity(dewpoint, temperature);
+                        humidity = this.roundNumber(humidity);
 
                         JSONObject jsonElement = new JSONObject();
                         JSONObject measurement = new JSONObject();
@@ -196,7 +200,19 @@ public class XMLParser {
                 Math.exp((17.625*dewpoint)/(243.04+dewpoint))/Math.exp((17.625*temperature)/(243.04+temperature))
         );
 
-        BigDecimal decimalValue = new BigDecimal(humidity);
+        return this.roundNumber(humidity);
+    }
+
+
+    /**
+     * Rounds a number to two decimals
+     *
+     * @param value
+     * @return
+     */
+    private Double roundNumber(Double value)
+    {
+        BigDecimal decimalValue = new BigDecimal(value);
         decimalValue = decimalValue.setScale(2, RoundingMode.HALF_UP);
 
         return decimalValue.doubleValue();
