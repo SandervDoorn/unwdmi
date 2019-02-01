@@ -19,16 +19,17 @@ public class RealMultiThreaded {
      */
     public static void main (String[] args) throws Exception
     {
-        LinkedBlockingQueue<JSONObject> XMLQueue = new LinkedBlockingQueue<>();
-//        DataSaver dataServer = new DataSaver("52.166.192.171", 443);
-        DataSaver dataServer = new DataSaver("192.168.1.21", 443);
+        System.out.println("Attempting to connect to server");
+        LinkedBlockingQueue<JSONObject> JsonQueue = new LinkedBlockingQueue<>();
+        DataSaver dataServer = new DataSaver("52.166.192.171", 443);
 
-        Boolean error = dataServer.connectToDataServer();
-//        Boolean error = false;
-        QueueThread queueThread = new QueueThread(XMLQueue, dataServer);
+        Boolean error = dataServer.connect();
+
+        QueueThread queueThread = new QueueThread(JsonQueue, dataServer);
         queueThread.start();
 
         if (!error) {
+            System.out.println("Connection established, awaiting incoming data");
             try (
                     //Socket the generator is on
                     ServerSocket serverSocket = new ServerSocket(7789)
@@ -36,7 +37,7 @@ public class RealMultiThreaded {
                 while (true) {
                     Socket clientSocket = serverSocket.accept();
 
-                    threadPool.execute(new HandleRequestThread(clientSocket, XMLQueue));
+                    threadPool.execute(new HandleRequestThread(clientSocket, JsonQueue));
                 }
 
             } catch (IOException ex) {

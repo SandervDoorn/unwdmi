@@ -30,19 +30,14 @@ public class DataSaver {
      * @return bool
      * @throws Exception
      */
-    public boolean connectToDataServer() throws Exception {
+    public boolean connect() throws Exception {
         try {
-            SSLSocketFactory factory =
-                    (SSLSocketFactory) SSLSocketFactory.getDefault();
-            SSLSocket socket =
-                    (SSLSocket) factory.createSocket(this.dataserverAddress, this.dataserverPort);
+            SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+            SSLSocket socket = (SSLSocket) factory.createSocket(this.dataserverAddress, this.dataserverPort);
 
             socket.startHandshake();
 
-            PrintWriter out = new PrintWriter(
-                    new BufferedWriter(
-                            new OutputStreamWriter(
-                                    socket.getOutputStream())));
+            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
 
             this.out = out;
         } catch (Exception ex) {
@@ -60,7 +55,7 @@ public class DataSaver {
      * @return
      * @throws Exception
      */
-    public boolean sendJsonToDataServer(ArrayList<JSONObject> json) throws Exception
+    public boolean sendJson(ArrayList<JSONObject> json) throws Exception
     {
         try {
             out.println(json.get(0));
@@ -68,8 +63,7 @@ public class DataSaver {
             out.flush();
 
             if (out.checkError())
-                System.out.println(
-                        "Something went wrong with sending data to server");
+                System.out.println("Something went wrong with sending data to server");
 
         } catch (Exception e) {
 
