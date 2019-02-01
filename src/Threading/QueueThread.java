@@ -31,20 +31,21 @@ public class QueueThread extends Thread {
                 Boolean result = false;
 
                 this.queue.drainTo(jsonArray, 100);
-
+                System.out.println("Sending drained queue to data server");
                 try {
                     result = this.dataServer.sendJson(jsonArray);
                 } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
+                    System.out.println(ex.getStackTrace().toString());
                 }
 
                 if (!result) {
                     //If for some reason the data couldnt be transferred to the server,
                     // we put it back in the queue to go for a second time
+                    System.out.println("Server did not receive data properly, putting back json in queue");
                     try {
                         this.queue.put(jsonArray.get(0));
                     } catch (Exception ex) {
-                        System.out.println(ex.getMessage());
+                        System.out.println(ex.getStackTrace().toString());
                     }
                 }
             }

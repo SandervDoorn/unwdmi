@@ -34,9 +34,11 @@ public class HandleRequestThread implements Runnable {
 
             //Listen to socket for incoming XML
             while (this.socket.isConnected()) {
+
                 xmlLine = this.in.readLine();
 
                 if (xmlLine != null) {
+
                     XMLElement.append(xmlLine);
                     if (xmlLine.equals("</WEATHERDATA>")) {
                         //We received the end of an XML element, parase it and add it to the queue
@@ -46,12 +48,14 @@ public class HandleRequestThread implements Runnable {
                             //end xml element and add it to queue
                             result = XMLParser.parseXML();
                         } catch (Exception ex) {
-                            System.out.print(ex.getMessage());
+                            System.out.print(ex.getStackTrace().toString());
                         }
-
+//                        System.out.println(result);
                         if (result != null && result.length() > 0) {
                             queue.put(result);
                         }
+
+                        System.out.println("current queue size " + queue.size());
 
                         //Reset the variable
                         XMLElement = new StringBuilder();
