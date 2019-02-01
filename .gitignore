@@ -7,4 +7,5 @@ src/PrimeSearch/
 # Ignore local folders and files
 backend/
 json-testfiles/
+weather-stations/
 storageserver/__pycache__
