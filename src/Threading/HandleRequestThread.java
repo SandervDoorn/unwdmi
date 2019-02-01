@@ -50,12 +50,10 @@ public class HandleRequestThread implements Runnable {
                         } catch (Exception ex) {
                             System.out.print(ex.getStackTrace().toString());
                         }
-//                        System.out.println(result);
+
                         if (result != null && result.length() > 0) {
                             queue.put(result);
                         }
-
-                        System.out.println("current queue size " + queue.size());
 
                         //Reset the variable
                         XMLElement = new StringBuilder();

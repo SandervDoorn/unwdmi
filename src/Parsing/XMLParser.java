@@ -10,6 +10,8 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -190,6 +192,13 @@ public class XMLParser {
      */
     private Double calculateHumidity(Double dewpoint, Double temperature)
     {
-        return 100*(Math.exp((17.625*dewpoint)/(243.04+dewpoint))/Math.exp((17.625*temperature)/(243.04+temperature)));
+        Double humidity = 100*(
+                Math.exp((17.625*dewpoint)/(243.04+dewpoint))/Math.exp((17.625*temperature)/(243.04+temperature))
+        );
+
+        BigDecimal decimalValue = new BigDecimal(humidity);
+        decimalValue = decimalValue.setScale(2, RoundingMode.HALF_UP);
+
+        return decimalValue.doubleValue();
     }
 }
