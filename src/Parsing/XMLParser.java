@@ -47,8 +47,8 @@ public class XMLParser {
 
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
-                    Double temperature;
-                    Double dewpoint;
+                    Double temperature = null;
+                    Double dewpoint = null;
 
                     String time = element.getElementsByTagName("TIME")
                             .item(0).getChildNodes().item(0).getNodeValue();
@@ -59,29 +59,20 @@ public class XMLParser {
                         return null;
                     }
 
-                    Integer stationCode = Integer.parseInt(element.getElementsByTagName("STN")
-                            .item(0).getChildNodes().item(0).getNodeValue());
+                    Integer stationCode = Integer.parseInt(this.getValueFromElement("STN", element));
 
                     if (Arrays.asList(XMLParser.RELEVANT_STATIONS).contains(stationCode)) {
-                        //TODO fix not only missing values but deviation too
-                        String date = element.getElementsByTagName("DATE")
-                                .item(0).getChildNodes().item(0).getNodeValue();
+                        String date = this.getValueFromElement("DATE", element);
+
+                        if (element.getElementsByTagName("TEMP").item(0).getChildNodes().item(0) != null) {
+                            temperature = Double.parseDouble(this.getValueFromElement("TEMP", element));
+                        }
+                        temperature = this.updatePreviousMeasurements("TEMP", temperature);
 
                         if (element.getElementsByTagName("DEWP").item(0).getChildNodes().item(0) != null) {
-                            temperature = Double.parseDouble(element.getElementsByTagName("TEMP")
-                                    .item(0).getChildNodes().item(0).getNodeValue());
-                            this.updatePreviousMeasurements("TEMP", temperature);
-                        } else {
-                            temperature = this.resolveValueFromPreviousMeasurements("TEMP");
+                            dewpoint = Double.parseDouble(this.getValueFromElement("DEWP", element));
                         }
-
-                        if (element.getElementsByTagName("DEWP").item(0).getChildNodes().item(0) != null) {
-                            dewpoint = Double.parseDouble(element.getElementsByTagName("DEWP")
-                                    .item(0).getChildNodes().item(0).getNodeValue());
-                            this.updatePreviousMeasurements("DEWP", dewpoint);
-                        } else {
-                            dewpoint = this.resolveValueFromPreviousMeasurements("DEWP");
-                        }
+                        dewpoint = this.updatePreviousMeasurements("DEWP", dewpoint);
 
                         Double humidity = this.calculateHumidity(dewpoint, temperature);
 
@@ -95,6 +86,7 @@ public class XMLParser {
                         measurement.put("temp", temperature);
                         measurement.put("dewp", dewpoint);
                         measurement.put("hum", humidity);
+
                         jsonElement.put("measurement", measurement);
 
                         json.add(jsonElement);
@@ -105,11 +97,7 @@ public class XMLParser {
             ex.printStackTrace();
         }
 
-        if (json.size() > 0) {
-            return container.put("items",json);
-        } else {
-            return null;
-        }
+        return json.size() > 0 ? container.put("items", json) : null;
     }
 
     /**
@@ -151,7 +139,7 @@ public class XMLParser {
         return sum / list.size();
     }
 
-    private synchronized void updatePreviousMeasurements(String measurementType, Double value) throws Exception
+    private synchronized Double updatePreviousMeasurements(String  measurementType, Double value) throws Exception
     {
         List<Double> list;
 
@@ -163,17 +151,38 @@ public class XMLParser {
             list = XMLParser.PREVIOUS_HUMIDITY;
         }
 
+        Double sum = 0.00;
+        Double average;
+
+        for (Double historicValue : list) {
+            sum += historicValue;
+        }
+
+        average = sum / list.size();
+        Double lastMeasurement = list.get(list.size() - 1);
+
+        //If either the value is missing or we are receiving incorrect data, extrapolate from history
+        if (value == null || (value > 1.5 * lastMeasurement || value < 1.5 * lastMeasurement)) {
+            value = average;
+        }
+
         try {
             if (list.size() >= 30) {
                 list.remove(0);
             }
         } catch (IndexOutOfBoundsException ex) {
-
+            System.out.println(ex.getMessage());
         }
 
-//        this.wait();
         list.add(value);
-//        this.notifyAll();
+
+        return value;
+    }
+
+    private String getValueFromElement(String type, Element element)
+    {
+        return element.getElementsByTagName(type)
+                .item(0).getChildNodes().item(0).getNodeValue();
     }
 
     /**

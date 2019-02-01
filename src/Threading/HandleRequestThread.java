@@ -16,13 +16,13 @@ public class HandleRequestThread implements Runnable {
 
     /**
      * @param clientSocket
-     * @param XMLQueue
+     * @param JsonQueue
      * @throws IOException
      */
-    public HandleRequestThread(Socket clientSocket, LinkedBlockingQueue<JSONObject> XMLQueue) throws IOException {
+    public HandleRequestThread(Socket clientSocket, LinkedBlockingQueue<JSONObject> JsonQueue) throws IOException {
         this.socket = clientSocket;
         this.in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        this.queue = XMLQueue;
+        this.queue = JsonQueue;
     }
 
     @Override
@@ -32,12 +32,14 @@ public class HandleRequestThread implements Runnable {
         try {
             String xmlLine;
 
+            //Listen to socket for incoming XML
             while (this.socket.isConnected()) {
                 xmlLine = this.in.readLine();
 
                 if (xmlLine != null) {
                     XMLElement.append(xmlLine);
                     if (xmlLine.equals("</WEATHERDATA>")) {
+                        //We received the end of an XML element, parase it and add it to the queue
                         XMLParser XMLParser = new XMLParser(XMLElement.toString());
                         JSONObject result = new JSONObject();
                         try {
@@ -51,6 +53,7 @@ public class HandleRequestThread implements Runnable {
                             queue.put(result);
                         }
 
+                        //Reset the variable
                         XMLElement = new StringBuilder();
                     }
                 }

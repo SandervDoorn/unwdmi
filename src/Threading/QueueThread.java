@@ -25,7 +25,7 @@ public class QueueThread extends Thread {
         super.run();
 
         while (true) {
-            System.out.println(this.queue.size());
+            //When the queue reaches a hundred elements, we drain the queue and send the data to the dataserver
             if (this.queue.size() > 100) {
                 ArrayList<JSONObject> jsonArray = new ArrayList<>();
                 Boolean result = false;
@@ -33,7 +33,7 @@ public class QueueThread extends Thread {
                 this.queue.drainTo(jsonArray, 100);
 
                 try {
-                    result = this.dataServer.sendJsonToDataServer(jsonArray);
+                    result = this.dataServer.sendJson(jsonArray);
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
                 }
@@ -42,7 +42,6 @@ public class QueueThread extends Thread {
                     //If for some reason the data couldnt be transferred to the server,
                     // we put it back in the queue to go for a second time
                     try {
-                        System.out.println("putting back json in queue");
                         this.queue.put(jsonArray.get(0));
                     } catch (Exception ex) {
                         System.out.println(ex.getMessage());
