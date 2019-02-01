@@ -154,7 +154,7 @@ public class XMLParser {
         }
 
         //If either the value is missing or we are receiving incorrect data, extrapolate from history
-        if (value == null || (value > 1.5 * lastMeasurement || value < 1.5 * lastMeasurement)) {
+        if (value == null || (value > 1.5 * lastMeasurement || value < 1.5 * lastMeasurement && lastMeasurement != 0)) {
             value = average;
         }
 
