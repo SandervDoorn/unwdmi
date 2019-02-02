@@ -22,7 +22,7 @@
 					fill : '#4c5667'
 				}
 			},
-			 markerStyle: {
+			markerStyle: {
                 initial: {
                     r: 9,
                     'fill': '#a288d5',

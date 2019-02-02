@@ -20,6 +20,13 @@
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css">
 
     <script src="/assets/js/modernizr.min.js"></script>
+
+
+    <script>
+
+        var USER_TOKEN = "<?php echo $this->user->getToken() ?>";
+
+    </script>
 </head>
 
 <body class="fixed-left">
@@ -196,40 +203,49 @@
     </div>
     <!-- END wrapper -->
 
+    <script src=""></script>
 
     <script>
         var resizefunc = [];
+
+        process = {
+            env: {
+                NODE_ENV: "development"
+            }
+        };
+
     </script>
 
     <!-- Plugins  -->
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/popper.min.js"></script><!-- Popper for Bootstrap -->
-    <script src="/assets/js/bootstrap.min.js"></script>
-    <script src="/assets/js/detect.js"></script>
-    <script src="/assets/js/fastclick.js"></script>
-    <script src="/assets/js/jquery.slimscroll.js"></script>
-    <script src="/assets/js/jquery.blockUI.js"></script>
-    <script src="/assets/js/waves.js"></script>
-    <script src="/assets/js/wow.min.js"></script>
-    <script src="/assets/js/jquery.nicescroll.js"></script>
-    <script src="/assets/js/jquery.scrollTo.min.js"></script>
-    <script src="/plugins/switchery/switchery.min.js"></script>
+    <?php \App\LayoutModel::appendScript('/assets/js/jquery.min.js', -200) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/popper.min.js', -200) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/bootstrap.min.js', -200) ?>
+    <?php \App\LayoutModel::appendScript('https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js', -200) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/babel.js', -150) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/detect.js', -150) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/fastclick.js', -150) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/jquery.slimscroll.js', -150) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/jquery.blockUI.js', -150) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/waves.js', -150) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/wow.min.js', -150) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/jquery.nicescroll.js', -150) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/jquery.scrollTo.min.js', -150) ?>
+    <?php \App\LayoutModel::appendScript('/plugins/switchery/switchery.min.js', -150) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/socket.sdk.js', -150) ?>
 
     <!-- Counter Up  -->
-    <script src="/plugins/waypoints/lib/jquery.waypoints.min.js"></script>
-    <script src="/plugins/counterup/jquery.counterup.min.js"></script>
+    <?php \App\LayoutModel::appendScript('/plugins/waypoints/lib/jquery.waypoints.min.js', -100) ?>
+    <?php \App\LayoutModel::appendScript('/plugins/counterup/jquery.counterup.min.js', -100) ?>
 
     <!--Morris Chart-->
-    <script src="/plugins/morris/morris.min.js"></script>
-    <script src="/plugins/raphael/raphael-min.js"></script>
-
-    <!-- Page js  -->
-    <script src="/assets/pages/jquery.dashboard.js"></script>
+    <?php \App\LayoutModel::appendScript('/plugins/morris/morris.min.js', -50) ?>
+    <?php \App\LayoutModel::appendScript('/plugins/raphael/raphael-min.js', -50) ?>
 
     <!-- Custom main Js -->
-    <script src="/assets/js/jquery.core.js"></script>
-    <script src="/assets/js/jquery.app.js"></script>
+    <?php \App\LayoutModel::appendScript('/assets/js/jquery.core.js', 100) ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/jquery.app.js', 100) ?>
 
+    <?php echo $this->scripts(); ?>
 
     <script type="text/javascript">
         jQuery(document).ready(function ($) {

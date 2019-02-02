@@ -45,7 +45,7 @@ class AuthController
             $postData = $request->getPost();
 
             $username = $postData['username'];
-            $password = $postData['password'];
+            $password = hash('ripemd160', $postData['password']);
 
             $user = $this->userService->auth($username, $password);
 
@@ -64,6 +64,12 @@ class AuthController
 
     public function lockScreen(Request $request, Response $response)
     {
+        if (!$this->userService->hasUser()) {
+            $response->addHeader('Location', '/auth/login');
+
+            return $response;
+        }
+
         $user = $this->userService->fetchUser();
         $this->userService->destroy();
 

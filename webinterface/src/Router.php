@@ -20,10 +20,6 @@ class Router {
      * */
     private $notFoundRoute;
 
-    public function __construct()
-    {
-
-    }
 
     public function build(array $config)
     {
@@ -37,8 +33,9 @@ class Router {
     {
         foreach ($this->routes as $route) {
             /** @var $route Route */
+            preg_match('/^' . str_replace('/', '\/', $route->getRoute()) . '$/', $request->getUrl(), $result);
 
-            if($route->getUrl() == $request->getUrl()) {
+            if (count($result)) {
                 return $route;
             }
         }

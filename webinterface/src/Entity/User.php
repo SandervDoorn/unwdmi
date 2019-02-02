@@ -13,6 +13,7 @@ class User
 
     public $display_name;
 
+    public $token;
 
 
     /**
@@ -77,6 +78,22 @@ class User
     public function setDisplayName($display_name)
     {
         $this->display_name = $display_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
     }
 
 

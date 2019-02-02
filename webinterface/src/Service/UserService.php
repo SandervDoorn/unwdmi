@@ -47,6 +47,22 @@ class UserService
         session_destroy();
     }
 
+    public function authorize(string $token)
+    {
+        $qb = new QueryBuilder();
+        $userData = $this->database->execute(
+            $qb->select('*', 'user', [
+                'token' => $token,
+            ])
+        );
+
+        if (! is_array($userData)) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function auth(string $username, string $password)
     {
         $qb = new QueryBuilder();

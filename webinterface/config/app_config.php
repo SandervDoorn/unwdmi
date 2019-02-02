@@ -12,6 +12,7 @@ use App\Controller\IndexController;
 
 return [
     'router' => [
-        'routes' => include __DIR__ . '/routes.php',
-    ]
+        'http-routes' => include __DIR__ . '/http-routes.php',
+        'console-routes' => include __DIR__ . '/console-routes.php',
+    ],
 ];

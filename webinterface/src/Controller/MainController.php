@@ -19,4 +19,14 @@ class MainController
         return [];
     }
 
+    public function map()
+    {
+        return [];
+    }
+
+    public function departments()
+    {
+        return [];
+    }
+
 }
