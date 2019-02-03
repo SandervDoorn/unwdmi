@@ -19,6 +19,30 @@ File: Main Css
   border-top: 5px solid #003fa4;
 }
 
+.nav-user .rounded-circle {
+  margin-top: -5px;
+}
+
+.card-box .react-bs-table-pagination > .row {
+  margin-top: 35px !important;
+}
+
+.card-box .react-bs-table {
+  margin-left: -20px;
+  margin-right: -21px;
+  margin-bottom: -22px;
+  border: none;
+}
+
+#station-table .react-bs-table tr {
+  cursor: pointer;
+}
+
+.card-box .react-bs-table tr td:first-child,
+.card-box .react-bs-table tr th:first-child {
+  padding-left: 20px;
+}
+
 .topbar .topbar-left, .topbar .navbar-custom {
   border-bottom: 1px solid #003fa4
 }

@@ -11,7 +11,11 @@
 
     Map.prototype.init = function() {
 
-        $(document).ready(function() {
+        /* ----- REACTJS ----- */
+
+        /* Region Table */
+        $(document).ready(async function() {
+
             $('#honduras-map-markers').vectorMap({
                 map: 'honduras',
                 normalizeFunction : 'polynomial',
@@ -25,34 +29,45 @@
                 markerStyle: {
                     initial: {
                         r: 9,
-                        'fill': '#a288d5',
-                        'fill-opacity': 0.9,
+                        'fill': '#003fa4',
+                        'fill-opacity': 1,
                         'stroke': '#fff',
                         'stroke-width' : 7,
                         'stroke-opacity': 0.4
                     },
                     hover: {
-                        'stroke': '#fff',
+                        'stroke': '#bbb',
                         'fill-opacity': 1,
-                        'stroke-width': 1.5
+                        'stroke-width': 7,
                     }
                 },
+                markers: await $.SocketSDK.getHondurasMarkers(),
                 backgroundColor : 'transparent',
-                onMarkerTipShow: function(event, label, index){
+                onMarkerTipShow: async function(event, label, index) {
+                try {
                     label.html(
-                        '<b>'+ index +'</b><br/>'+
-                        '<b>Population: </b>'+ index +'</br>'+
-                        '<b>Unemployment rate: </b>'+ index +'%'
+                        '<b>Station: </b>'+ index +'<br/>'+
+                        '<b>Temperature: </b></br>'+
+                        '<b>Humidity: </b>'
                     );
-                },
-                onRegionTipShow: function(event, label, code){
+
+                    let sation = await $.SocketSDK.getStation(index);
+
                     label.html(
-                        '<b>'+label.html()+'</b></br>'+
-                        'Average Temperature: 17 &deg;'
+                        '<b>Station: </b>'+ index +'<br/>'+
+                        '<b>Temperature: </b>'+ sation.temperature +'°</br>'+
+                        '<b>Humidity: </b>'+ sation.humidity +'%'
+                    );
+                } catch (e) {
+                    label.html(
+                        '<b>Station: </b>'+ index +'<br/>'+
+                        '<b style="color: red;">' + e.message + '</b>'
                     );
                 }
-            });
-        })
+            }
+        });
+
+        });
 
     },
     //init

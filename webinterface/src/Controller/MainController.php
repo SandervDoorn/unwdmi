@@ -24,7 +24,12 @@ class MainController
         return [];
     }
 
-    public function departments()
+    public function hondurasStations()
+    {
+        return [];
+    }
+
+    public function usaStations()
     {
         return [];
     }

@@ -35,11 +35,18 @@ return [
         'template' => 'main/map',
         'layout' => 'layout/default'
     ],
-    'departments' => [
-        'route' => '/departments',
+    'honduras-stations' => [
+        'route' => '/stations/honduras',
         'controller' => MainController::class,
-        'action' => 'departments',
-        'template' => 'main/departments',
+        'action' => 'hondurasStations',
+        'template' => 'main/honduras-stations',
+        'layout' => 'layout/default'
+    ],
+    'usa-stations' => [
+        'route' => '/stations/usa',
+        'controller' => MainController::class,
+        'action' => 'usaStations',
+        'template' => 'main/usa-stations',
         'layout' => 'layout/default'
     ],
 

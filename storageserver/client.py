@@ -1,3 +1,6 @@
+"""
+weatherstation socket tester file
+"""
 from socket import *
 import ssl
 import _ssl
@@ -14,15 +17,15 @@ context.load_verify_locations('certificates/lacthosa.crt')
 with socket(AF_INET, SOCK_STREAM) as s:
     with context.wrap_socket(s, server_hostname=HOST) as sock:
         sock.connect((HOST, PORT))
-        examplejson = """[
+        examplejson = """{"items":[
         {
             "station": 123456,
             "measurement": {
                 "time": "15:01",
                 "date": "21-01-19",
-                "temperature": "21",
-                "humidity": "10",
-                "dewpoint": "15"
+                "temp": 21,
+                "hum": 10,
+                "dewp": 15
             }
         },
         {
@@ -30,9 +33,9 @@ with socket(AF_INET, SOCK_STREAM) as s:
             "measurement": {
                 "time": "15:01",
                 "date": "21-01-19",
-                "temperature": "21",
-                "humidity": "10",
-                "dewpoint": "15"
+                "temp": 21,
+                "hum": 10,
+                "dewp": 15
             }
         },
         {
@@ -40,9 +43,9 @@ with socket(AF_INET, SOCK_STREAM) as s:
             "measurement": {
                 "time": "15:01",
                 "date": "21-01-19",
-                "temperature": "21",
-                "humidity": "10",
-                "dewpoint": "15"
+                "temp": 21,
+                "hum": 10,
+                "dewp": 15
             }
         },
         {
@@ -50,11 +53,11 @@ with socket(AF_INET, SOCK_STREAM) as s:
             "measurement": {
                 "time": "15:01",
                 "date": "21-01-19",
-                "temperature": "21",
-                "humidity": "10",
-                "dewpoint": "15"
+                "temp": 21,
+                "hum": 10,
+                "dewp": 15
             }
         }
-        ]"""
+        ]}"""
         sock.sendall(examplejson.encode())
 

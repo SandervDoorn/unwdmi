@@ -19,6 +19,16 @@ use PHPSocketIO\SocketIO;
 class ConsoleController
 {
 
+    const HONDURAS_LATITUDE_START = 13;
+    const HONDURAS_LATITUDE = 14.75;
+    const HONDURAS_LATITUDE_END = 16.5;
+    const HONDURAS_LATITUDE_RANGE = 1.75;
+
+    const HONDURAS_LONGITUDE_START = -89.4;
+    const HONDURAS_LONGITUDE = -86.3;
+    const HONDURAS_LONGITUDE_END = -83.2;
+    const HONDURAS_LONGITUDE_RANGE = 3.1;
+
     /**
      * @var SocketIO
      * */
@@ -63,64 +73,20 @@ class ConsoleController
 
     public function socketInit(Socket $socket)
     {
-        echo "new connection!" . $socket->id . "\n";
-        $socket->on('get_station', function($data) use ($socket) {
+        echo "new connection: " . $socket->id . "!\n";
+
+        $socket->on('get_station', $this->socket($socket, function($stationId) use ($socket) {
             echo "get_station\n";
-            list($token, $requestId, $stationId) = $data;
+            return $this->getStation($stationId);
+        }));
 
-            if (! $this->userService->authorize($token)) {
-                $socket->emit('result', [
-                    'command' => 'get_station',
-                    'error' => 'Unauthorized',
-                    'requestId' => $requestId
-                ]);
-
-                return;
-            }
-
-            $data = $this->getStation($stationId);
-
-            if ($data == false) {
-                $socket->emit('result', [
-                    'command' => 'get_station',
-                    'error' => 'Station not available.',
-                    'requestId' => $requestId
-                ]);
-
-                return;
-            }
-
-            $socket->emit('result', [
-                'command' => 'get_station',
-                'result' => $data,
-                'requestId' => $requestId
-            ]);
-        });
-
-        $socket->on('get_usa_markers', function($data) use ($socket) {
+        $socket->on('get_usa_markers', $this->socket($socket, function() use ($socket) {
             echo "get_usa_markers\n";
-            list($token, $requestId) = $data;
-
-            if (! $this->userService->authorize($token)) {
-                $socket->emit('result', [
-                    'command' => 'get_station',
-                    'error' => 'Unauthorized',
-                    'requestId' => $requestId
-                ]);
-
-                return;
-            }
 
             $stations = $this->getStationsInfo();
 
             if ($stations == false) {
-                $socket->emit('result', [
-                    'command' => 'get_station',
-                    'error' => 'Unable to load stationmarkers',
-                    'requestId' => $requestId
-                ]);
-
-                return;
+                throw new \Exception('Unable to load stationmarkers');
             }
 
             $availableStations = $this->getAvailableStations();
@@ -135,7 +101,11 @@ class ConsoleController
                     continue;
                 }
 
-                $stationData = $this->getStation($stationInfo['id']);
+                try {
+                    $stationData = $this->getStation($stationInfo['id']);
+                } catch (\Exception $e) {
+                    continue;
+                }
 
                 if ($stationData == false) {
                     continue;
@@ -155,37 +125,16 @@ class ConsoleController
                 ];
             }
 
-            $socket->emit('result', [
-                'command' => 'get_usa_markers',
-                'result' => $data,
-                'requestId' => $requestId
-            ]);
-        });
+            return $data;
+        }));
 
-        $socket->on('get_honduras_markers', function($data) use ($socket) {
+        $socket->on('get_honduras_markers', $this->socket($socket, function() use ($socket) {
             echo "get_honduras_markers\n";
-            list($token, $requestId) = $data;
-
-            if (! $this->userService->authorize($token)) {
-                $socket->emit('result', [
-                    'command' => 'get_station',
-                    'error' => 'Unauthorized',
-                    'requestId' => $requestId
-                ]);
-
-                return;
-            }
 
             $stations = $this->getStationsInfo();
 
             if ($stations == false) {
-                $socket->emit('result', [
-                    'command' => 'get_station',
-                    'error' => 'Unable to load stationmarkers',
-                    'requestId' => $requestId
-                ]);
-
-                return;
+                throw new \Exception('Unable to load stationmarkers');
             }
 
             $availableStations = $this->getAvailableStations();
@@ -200,7 +149,11 @@ class ConsoleController
                     continue;
                 }
 
-                $stationData = $this->getStation($stationInfo['id']);
+                try {
+                    $stationData = $this->getStation($stationInfo['id']);
+                } catch (\Exception $e) {
+                    continue;
+                }
 
                 if ($stationData == false) {
                     continue;
@@ -220,59 +173,223 @@ class ConsoleController
                 ];
             }
 
-            $socket->emit('result', [
-                'command' => 'get_honduras_markers',
-                'result' => $data,
-                'requestId' => $requestId
-            ]);
-        });
+            echo "result\n";
+            return $data;
+        }));
 
-        $socket->on('get_average_temperature', function($data) use ($socket) {
+        $socket->on('get_average_temperature', $this->socket($socket, function() use ($socket) {
             echo "get_average_temperature\n";
-            list($token, $requestId) = $data;
+            return $this->getAverageTemperature();
+        }));
 
-            if (! $this->userService->authorize($token)) {
-                $socket->emit('result', [
-                    'command' => 'get_station',
-                    'error' => 'Unauthorized',
-                    'requestId' => $requestId
-                ]);
-
-                return;
-            }
-
-            $socket->emit('result', [
-                'command' => 'get_average_temperature',
-                'result' => $this->getAverageTemperature(),
-                'requestId' => $requestId
-            ]);
-        });
-
-        $socket->on('get_average_humidity', function($data) use ($socket) {
+        $socket->on('get_average_humidity', $this->socket($socket, function() use ($socket) {
             echo "get_average_humidity\n";
-            list($token, $requestId) = $data;
+            return $this->getAverageHumidity();
+        }));
 
-            if (! $this->userService->authorize($token)) {
-                $socket->emit('result', [
-                    'command' => 'get_station',
-                    'error' => 'Unauthorized',
-                    'requestId' => $requestId
-                ]);
+        $socket->on('get_honduras_regions', $this->socket($socket, function() use ($socket) {
+            echo "get_honduras_regions\n";
+            $stations = $this->getStationsInfo();
 
-                return;
+            if ($stations == false) {
+                throw new \Exception('Unable to load stations');
             }
 
-            $socket->emit('result', [
-                'command' => 'get_average_humidity',
-                'result' => $this->getAverageHumidity(),
-                'requestId' => $requestId
-            ]);
-        });
+            $availableStations = $this->getAvailableStations();
+
+            $stationRegionArray = [
+                'Honduras North' => [],
+                'Honduras East' => [],
+                'Honduras South' => [],
+                'Honduras West' => [],
+            ];
+
+            foreach ($stations as $stationInfo) {
+                if ($stationInfo['country'] != "'HONDURAS'") {
+                    continue;
+                }
+
+                if (! in_array($stationInfo['id'], $availableStations)) {
+                    continue;
+                }
+
+                try {
+                    $stationData = $this->getStation($stationInfo['id']);
+                } catch (\Exception $e) {
+                    continue;
+                }
+
+                if ($stationInfo['lat'] >= self::HONDURAS_LATITUDE) {
+                    /* NORTH */
+                    $latDistance = abs($stationInfo['lat'] - self::HONDURAS_LATITUDE);
+                    $latDistanceValue = $latDistance / self::HONDURAS_LATITUDE_RANGE;
+
+                    if ($stationInfo['lng'] >= self::HONDURAS_LONGITUDE) {
+                        /* EAST */
+                        $lngDistance = abs($stationInfo['lng'] - self::HONDURAS_LONGITUDE);
+                        $lgnDistanceValue = $lngDistance / self::HONDURAS_LONGITUDE_RANGE;
+
+                        if ($lgnDistanceValue > $latDistanceValue) {
+                            $type = 'Honduras East';
+                        } else {
+                            $type = 'Honduras North';
+                        }
+                    } else {
+                        /* WEST */
+                        $lngDistance = abs($stationInfo['lng'] - self::HONDURAS_LONGITUDE);
+                        $lgnDistanceValue = $lngDistance / self::HONDURAS_LONGITUDE_RANGE;
+
+                        if ($lgnDistanceValue > $latDistanceValue) {
+                            $type = 'Honduras West';
+                        } else {
+                            $type = 'Honduras North';
+                        }
+                    }
+                } else {
+                    /* SOUTH */
+                    $latDistance = abs($stationInfo['lat'] - self::HONDURAS_LATITUDE);
+                    $latDistanceValue = $latDistance / self::HONDURAS_LATITUDE_RANGE;
+
+                    if ($stationInfo['lng'] >= self::HONDURAS_LONGITUDE) {
+                        /* EAST */
+                        $lngDistance = abs($stationInfo['lng'] - self::HONDURAS_LONGITUDE);
+                        $lgnDistanceValue = $lngDistance / self::HONDURAS_LONGITUDE_RANGE;
+
+                        if ($lgnDistanceValue > $latDistanceValue) {
+                            $type = 'Honduras East';
+                        } else {
+                            $type = 'Honduras South';
+                        }
+                    } else {
+                        /* WEST */
+                        $lngDistance = abs($stationInfo['lng'] - self::HONDURAS_LONGITUDE);
+                        $lgnDistanceValue = $lngDistance / self::HONDURAS_LONGITUDE_RANGE;
+
+                        if ($lgnDistanceValue > $latDistanceValue) {
+                            $type = 'Honduras West';
+                        } else {
+                            $type = 'Honduras South';
+                        }
+                    }
+                }
+
+                $stationRegionArray[$type][] = $stationData;
+            }
+
+            $regionArray = [];
+            foreach ($stationRegionArray as $region => $stations) {
+                $temperatures = [];
+                $humidities = [];
+                foreach ($stations as $station) {
+                    $temperatures[] = $station['temperature'];
+                    $humidities[] = $station['humidity'];
+                }
+
+                if (count($temperatures)) {
+                    $tempAvg = round(array_sum($temperatures)/count($temperatures), 1) . ' °';
+                } else {
+                    $tempAvg = '-';
+                }
+
+                if (count($humidities)) {
+                    $humAvg = round(array_sum($humidities)/count($humidities), 1) . ' %';
+                } else {
+                    $humAvg = '-';
+                }
+
+                $regionArray[] = [
+                    'region' => $region,
+                    'temperature' => $tempAvg,
+                    'humidity' => $humAvg,
+                    'station_count' => count($stations)
+                ];
+            }
+
+            return $regionArray;
+        }));
+
+        $socket->on('get_honduras_stations', $this->socket($socket, function() use ($socket) {
+            echo "get_honduras_stations\n";
+            $stations = $this->getStationsInfo();
+
+            if ($stations == false) {
+                throw new \Exception('Unable to load stations');
+            }
+
+            $availableStations = $this->getAvailableStations();
+
+            $stationArray = [];
+
+            foreach ($stations as $stationInfo) {
+                if ($stationInfo['country'] != "'HONDURAS'") {
+                    continue;
+                }
+
+                if (!in_array($stationInfo['id'], $availableStations)) {
+                    continue;
+                }
+
+                $stationData = $this->getStation($stationInfo['id']);
+
+                $stationArray[] = [
+                    'id' => $stationInfo['id'],
+                    'name' => $stationInfo['name'],
+                    'temperature' => $stationData['temperature'],
+                    'humidity' => $stationData['humidity'],
+                    'datetime' => $stationData['date'] . ' ' . $stationData['time'],
+                ];
+            }
+
+            return $stationArray;
+        }));
+
+        $socket->on('get_usa_stations', $this->socket($socket, function() use ($socket) {
+            echo "get_honduras_stations\n";
+            $stations = $this->getStationsInfo();
+
+            if ($stations == false) {
+                throw new \Exception('Unable to load stations');
+            }
+
+            $availableStations = $this->getAvailableStations();
+
+            $stationArray = [];
+
+            foreach ($stations as $stationInfo) {
+                if ($stationInfo['country'] != "'UNITED STATES'") {
+                    continue;
+                }
+
+                if (!in_array($stationInfo['id'], $availableStations)) {
+                    continue;
+                }
+
+                $stationData = $this->getStation($stationInfo['id']);
+
+                $stationArray[] = [
+                    'id' => $stationInfo['id'],
+                    'name' => $stationInfo['name'],
+                    'temperature' => $stationData['temperature'],
+                    'humidity' => $stationData['humidity'],
+                    'datetime' => $stationData['date'] . ' ' . $stationData['time'],
+                ];
+            }
+
+            return $stationArray;
+        }));
+
+        $socket->on('get_archive', $this->socket($socket, function($stationId) use ($socket) {
+            echo "get_archive\n";
+
+            $date = new \DateTime('now-1day');
+            return @file_get_contents(__DIR__ . '/../../../storageserver/weather-stations/' . $stationId . '/' . $date->format('d-m-Y') . '.csv', 'r');
+        }));
+
     }
 
     public function getAvailableStations()
     {
-        $stations = scandir(__DIR__ . '/../../../storageserver/json-testfiles/');
+        $stations = scandir(__DIR__ . '/../../../storageserver/weather-stations/');
 
         foreach ($stations as $key => $station) {
             if ($station == '.' || $station == '..') {
@@ -285,14 +402,21 @@ class ConsoleController
 
     public function getStation($stationId)
     {
-        $csvData = @file_get_contents(__DIR__ . '/../../../storageserver/json-testfiles/' . $stationId . '/' . date('d-m-y') . '.csv', 'r');
+        $date = new \DateTime('now-1day');
+        $csvData = @file_get_contents(__DIR__ . '/../../../storageserver/weather-stations/' . $stationId . '/' . $date->format('d-m-Y') . '.csv', 'r');
 
-        if ($csvData == null) {
-            return false;
+        if ($csvData == null || $csvData == false) {
+            throw new \Exception('Station not available.');
         }
 
         $lines  = explode(PHP_EOL, $csvData);
         $properties = str_getcsv(array_shift($lines));
+
+        while(end($lines) == '')
+        {
+            array_pop($lines);
+        }
+
         $values = str_getcsv(end($lines));
 
         $station = [];
@@ -306,27 +430,63 @@ class ConsoleController
     public function getAverageTemperature()
     {
         $availableStations = $this->getAvailableStations();
+        $stationsInfo = $this->getStationsInfo();
 
         $values = [];
-        foreach ($availableStations as $availableStation) {
-            $station = $this->getStation($availableStation);
+        foreach ($stationsInfo as $stationInfo) {
+            if ($stationInfo['country'] != "'HONDURAS'") {
+                continue;
+            }
+
+            if (!in_array($stationInfo['id'], $availableStations)) {
+                continue;
+            }
+
+            try {
+                $station = $this->getStation($stationInfo['id']);
+            } catch (\Exception $e) {
+                continue;
+            }
+
             $values[] = $station['temperature'];
         }
 
-        return array_sum($values) / count($values);
+        if (count($values) > 0) {
+            return round(array_sum($values) / count($values), 1);
+        }
+
+        return '-';
     }
 
     public function getAverageHumidity()
     {
         $availableStations = $this->getAvailableStations();
+        $stationsInfo = $this->getStationsInfo();
 
         $values = [];
-        foreach ($availableStations as $availableStation) {
-            $station = $this->getStation($availableStation);
+        foreach ($stationsInfo as $stationInfo) {
+            if ($stationInfo['country'] != "'HONDURAS'") {
+                continue;
+            }
+
+            if (!in_array($stationInfo['id'], $availableStations)) {
+                continue;
+            }
+
+            try {
+                $station = $this->getStation($stationInfo['id']);
+            } catch (\Exception $e) {
+                continue;
+            }
+
             $values[] = $station['humidity'];
         }
 
-        return array_sum($values) / count($values);
+        if (count($values) > 0) {
+            return round(array_sum($values) / count($values), 1);
+        }
+
+        return '-';
     }
 
     public function getStationsInfo()
@@ -350,6 +510,52 @@ class ConsoleController
         }
 
         return $stations;
+    }
+
+    public function socket(Socket $socket, callable $event)
+    {
+        return function ($data) use ($socket, $event) {
+            list($token, $requestId) = $data;
+
+            if (! $this->userService->authorize($token)) {
+                $socket->emit('result', [
+                    'code' => 403,
+                    'error' => 'Unauthorized',
+                    'requestId' => $requestId
+                ]);
+
+                return;
+            }
+
+            try {
+                if (isset($data[2])){
+                    $result = call_user_func_array($event, $data[2]);
+                } else {
+                    $result = $event();
+                }
+            } catch (\Exception $e) {
+                $socket->emit('result', [
+                    'error' => $e->getMessage(),
+                    'requestId' => $requestId
+                ]);
+
+                return;
+            }
+
+            if ($result === false) {
+                $socket->emit('result', [
+                    'error' => 'No result',
+                    'requestId' => $requestId
+                ]);
+
+                return;
+            }
+
+            $socket->emit('result', [
+                'result' => $result,
+                'requestId' => $requestId
+            ]);
+        };
     }
 
 }

@@ -18,8 +18,10 @@
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="/assets/css/icons.css" rel="stylesheet" type="text/css">
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/pace.css" rel="stylesheet" type="text/css">
 
     <script src="/assets/js/modernizr.min.js"></script>
+    <script src="/assets/js/pace.min.js"></script>
 
 
     <script>
@@ -189,8 +191,7 @@
                                 </p>
                             </div>
                             <div class="col-4 text-right">
-                                <input type="checkbox" checked data-plugin="switchery" data-color="#3bafda"
-                                       data-size="small"/>
+                                <input type="checkbox" checked data-plugin="switchery" data-color="#3bafda" data-size="small"/>
                             </div>
                         </div>
 
@@ -202,8 +203,6 @@
 
     </div>
     <!-- END wrapper -->
-
-    <script src=""></script>
 
     <script>
         var resizefunc = [];
@@ -231,6 +230,11 @@
     <?php \App\LayoutModel::appendScript('/assets/js/jquery.nicescroll.js', -150) ?>
     <?php \App\LayoutModel::appendScript('/assets/js/jquery.scrollTo.min.js', -150) ?>
     <?php \App\LayoutModel::appendScript('/plugins/switchery/switchery.min.js', -150) ?>
+
+    <?php \App\LayoutModel::appendScript('https://unpkg.com/react@16/umd/react.development.js', -150) ?>
+    <?php \App\LayoutModel::appendScript('https://unpkg.com/react-dom@16/umd/react-dom.development.js', -150) ?>
+    <?php \App\LayoutModel::appendScript('https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.4.0/rxjs.umd.min.js', -150) ?>
+
     <?php \App\LayoutModel::appendScript('/assets/js/socket.sdk.js', -150) ?>
 
     <!-- Counter Up  -->
@@ -246,15 +250,6 @@
     <?php \App\LayoutModel::appendScript('/assets/js/jquery.app.js', 100) ?>
 
     <?php echo $this->scripts(); ?>
-
-    <script type="text/javascript">
-        jQuery(document).ready(function ($) {
-            $('.counter').counterUp({
-                delay: 100,
-                time: 1200
-            });
-        });
-    </script>
 
 </body>
 </html>

@@ -26,6 +26,21 @@
                     if (typeof data.error !== "undefined") {
                         done = true;
                         SocketSDK.socket.off('result', closure);
+
+                        if (data.code == 403) {
+                            swal({
+                                title: 'Account logged in elsewhere!',
+                                type: 'warning',
+                                html: '<p>You will be forced to login in again.</p>',
+                                showCloseButton: false,
+                                showConfirmButton: false
+                            });
+
+                            setTimeout(() => {
+                                window.location.replace('/auth/logout');
+                            }, 5000)
+                        }
+
                         reject(new Error(data.error));
                     }
 
@@ -47,7 +62,7 @@
 
     SocketSDK.prototype.getStation = function (stationID)
     {
-        return SocketSDK.prototype.request('get_station', stationID);
+        return SocketSDK.prototype.request('get_station', arguments);
     };
 
     SocketSDK.prototype.getUSAMarkers = function ()
@@ -67,7 +82,27 @@
 
     SocketSDK.prototype.getAverageHumidity = function ()
     {
-        return SocketSDK.prototype.request('get_average_humidity')
+        return SocketSDK.prototype.request('get_average_humidity');
+    };
+
+    SocketSDK.prototype.getHondurasRegions = function ()
+    {
+        return SocketSDK.prototype.request('get_honduras_regions');
+    };
+
+    SocketSDK.prototype.getHondurasStations = function ()
+    {
+        return SocketSDK.prototype.request('get_honduras_stations');
+    };
+
+    SocketSDK.prototype.getUSAStations = function ()
+    {
+        return SocketSDK.prototype.request('get_usa_stations');
+    };
+
+    SocketSDK.prototype.getArchive = function ()
+    {
+        return SocketSDK.prototype.request('get_archive', arguments)
     };
 
     //init

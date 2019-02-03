@@ -1,5 +1,6 @@
 <link href="/plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
 <link href="/plugins/sweet-alert/sweetalert2.min.css" rel="stylesheet" />
+<link href="https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table-all.min.css" rel="stylesheet" />
 
 <!-- Page-Title -->
 <div class="row">
@@ -28,9 +29,9 @@
 
     <div class="col-lg-6">
         <div class="card-box">
-            <h4 class="header-title m-t-0"><a href="/map" class="text-dark">Station Visualisation</a></h4>
+            <h4 class="header-title m-t-0"><a href="/map" class="text-dark">Station Visualisation Honduras</a></h4>
             <p class="text-muted m-b-10 font-13" style="border-bottom: 1px solid #eee; padding-bottom:10px;">
-                Real-time visualisation of the country. Provided with temperature and humidity over stations and departments.
+                Real-time visualisation of Honduras. Provided with temperature and humidity over stations.
             </p>
             <div id="honduras-map-markers" style="height: 300px;"></div>
         </div>
@@ -38,9 +39,9 @@
 
     <div class="col-lg-6">
         <div class="card-box">
-            <h4 class="header-title m-t-0"><a href="/map" class="text-dark">Station Visualisation</a></h4>
+            <h4 class="header-title m-t-0"><a href="/map" class="text-dark">Station Visualisation USA</a></h4>
             <p class="text-muted m-b-10 font-13" style="border-bottom: 1px solid #eee; padding-bottom:10px;">
-                Real-time visualisation of the country. Provided with temperature and humidity over stations and departments.
+                Real-time visualisation of the United States of America. Provided with temperature and humidity over stations.
             </p>
             <div id="america-map-markers" style="height: 300px;"></div>
         </div>
@@ -54,50 +55,12 @@
 <div class="row">
     <div class="col-lg-8">
         <div class="card-box">
-            <span class="pull-right text-dark"><small>UPDATED:</small> 20:10:52</span>
             <h4 class="text-dark header-title m-t-0">Region Measurements</h4>
             <p class="text-muted m-b-25 font-13">
                 The latest measurements, grouped by region
             </p>
 
-            <div class="table-responsive">
-                <table class="table mb-0">
-                    <thead>
-                    <tr>
-                        <th>Region</th>
-                        <th>Temperature</th>
-                        <th>Humidity</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Honduars North</td>
-                            <td>17 &deg;</td>
-                            <td>73 %</td>
-                            <td><span class="badge badge-success">OK</span></td>
-                        </tr>
-                        <tr>
-                            <td>Honduars West</td>
-                            <td>16 &deg;</td>
-                            <td>89 %</td>
-                            <td><span class="badge badge-success">OK</span></td>
-                        </tr>
-                        <tr>
-                            <td>Honduars East</td>
-                            <td>16 &deg;</td>
-                            <td>76 %</td>
-                            <td><span class="badge badge-success">OK</span></td>
-                        </tr>
-                        <tr>
-                            <td>Honduars South</td>
-                            <td>18 &deg;</td>
-                            <td>82 %</td>
-                            <td><span class="badge badge-success">OK</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <div id="region-table"></div>
         </div>
     </div>
     <!-- end col -8 -->
@@ -162,12 +125,16 @@
 </div>
 <!-- end row -->
 
-<?php \App\LayoutModel::appendScript('https://unpkg.com/react@16/umd/react.development.js') ?>
-<?php \App\LayoutModel::appendScript('https://unpkg.com/react-dom@16/umd/react-dom.development.js') ?>
-<?php \App\LayoutModel::appendScript('https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.4.0/rxjs.umd.min.js') ?>
+<!-- PLUGINS -->
 <?php \App\LayoutModel::appendScript('/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js') ?>
 <?php \App\LayoutModel::appendScript('/plugins/jvectormap/jquery-jvectormap-honduras.js') ?>
 <?php \App\LayoutModel::appendScript('/plugins/jvectormap/jquery-jvectormap-us-aea-en.js') ?>
+<?php \App\LayoutModel::appendScript('https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table.min.js') ?>
 <?php \App\LayoutModel::appendScript('/plugins/sweet-alert/sweetalert2.min.js') ?>
+
+<!-- COMPONENTS -->
 <?php \App\LayoutModel::appendScript('/assets/components/card.component.js', 0, 'text/babel') ?>
+<?php \App\LayoutModel::appendScript('/assets/components/region-table.component.js', 0, 'text/babel') ?>
+
+<!-- CONTROLLER -->
 <?php \App\LayoutModel::appendScript('/assets/pages/jquery.dashboard.js', 0, 'text/babel') ?>

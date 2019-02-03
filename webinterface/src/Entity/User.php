@@ -15,6 +15,8 @@ class User
 
     public $token;
 
+    public $avatar;
+
 
     /**
      * @return mixed
@@ -94,6 +96,22 @@ class User
     public function setToken($token)
     {
         $this->token = $token;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param mixed $avatar
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
     }
 
 

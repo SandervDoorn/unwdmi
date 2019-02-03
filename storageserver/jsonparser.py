@@ -16,7 +16,7 @@ def from_stream(data):
     if not data:
         return
     x = json.loads(data)
-    for i in x:
+    for i in x["items"]:
         create_folder(str(i["station"]))
         measurement = i["measurement"]
         filepath = settings['filepath'] + str(i["station"]) + "/" + measurement["date"] + ".csv"
@@ -26,16 +26,17 @@ def from_stream(data):
 def from_file(filepath):
     # Open the json file
     file = open(filepath)
-    j = json.load(file)
+    x = json.load(file)
     file.close()
 
-    # Create folder for station ID
-    create_folder(str(j["station"]))
+    for j in x['items']:
+        # Create folder for station ID
+        create_folder(str(j["station"]))
 
-    measurement = j["measurement"]
-    filepath = settings['filepath'] + str(j["station"]) + "/" + measurement["date"] + ".csv"
+        measurement = j["measurement"]
+        filepath = settings['filepath'] + str(j["station"]) + "/" + measurement["date"] + ".csv"
 
-    add_to_csv(measurement, filepath)
+        add_to_csv(measurement, filepath)
 
 
 def create_folder(station_id):
@@ -54,14 +55,18 @@ def add_to_csv(measurement, file):
 
     with open(file, "a", newline='') as csvfile:
         writer = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
+
+        # TODO: 1 file for station, 1 line per date with averages
         if newfile:
             writer.writerow(['time', 'date', 'temperature', 'humidity', 'dewpoint'])
 
+        print("Processing row")
         writer.writerow([measurement['time'],
                          measurement['date'],
-                         measurement['temperature'],
-                         measurement['humidity'],
-                         measurement['dewpoint']])
+                         measurement['temp'],
+                         measurement['hum'],
+                         measurement['dewp']])
+        print("Row added")
 
 
 

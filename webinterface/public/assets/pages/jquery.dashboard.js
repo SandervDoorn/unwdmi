@@ -9,20 +9,12 @@
 
     var Dashboard = function() {};
 
-    //creates Donut chart
-    Dashboard.prototype.createDonutChart = function(element, data, colors) {
-        Morris.Donut({
-            element: element,
-            data: data,
-            resize: true, //defaulted to true
-            colors: colors
-        });
-    },
+    Dashboard.MeasureDelayTime = 10000;
 
-    Dashboard.prototype.init = function() {
+    Dashboard.prototype.init = function()
+    {
 
         $(document).ready(async function() {
-            console.log(await $.SocketSDK.getHondurasMarkers());
             $('#honduras-map-markers').vectorMap({
                 map: 'honduras',
                 normalizeFunction : 'polynomial',
@@ -54,15 +46,15 @@
                     try {
                         label.html(
                             '<b>Station: </b>'+ index +'<br/>'+
-                            '<b>Temperature: </b>...</br>'+
-                            '<b>Humidity: </b>...%'
+                            '<b>Temperature: </b></br>'+
+                            '<b>Humidity: </b>'
                         );
 
                         let sation = await $.SocketSDK.getStation(index);
 
                         label.html(
                             '<b>Station: </b>'+ index +'<br/>'+
-                            '<b>Temperature: </b>'+ sation.temperature +'</br>'+
+                            '<b>Temperature: </b>'+ sation.temperature +'°</br>'+
                             '<b>Humidity: </b>'+ sation.humidity +'%'
                         );
                     } catch (e) {
@@ -105,15 +97,15 @@
                     try {
                         label.html(
                             '<b>Station: </b>'+ index +'<br/>'+
-                            '<b>Temperature: </b>...</br>'+
-                            '<b>Humidity: </b>...%'
+                            '<b>Temperature: </b></br>'+
+                            '<b>Humidity: </b>'
                         );
 
                         let sation = await $.SocketSDK.getStation(index);
 
                         label.html(
                             '<b>Station: </b>'+ index +'<br/>'+
-                            '<b>Temperature: </b>'+ sation.temperature +'</br>'+
+                            '<b>Temperature: </b>'+ sation.temperature +'°</br>'+
                             '<b>Humidity: </b>'+ sation.humidity +'%'
                         );
                     } catch (e) {
@@ -124,8 +116,100 @@
                     }
                 }
             });
+
+            /* ----- REACTJS ----- */
+
+            /* Cards */
+            let Temperature = new rxjs.Subject();
+
+            ReactDOM.render(
+                <Card
+                    title="Temperature"
+                    description={(<p className="swal2-description">The temperature given in this card is the average temperature of all stations together. The stations who are used in this calculation can be found on the "Stations" page in the side-menu or click <a href="/stations">here</a>.</p>)}
+                    icon="wi wi-thermometer"
+                    iconType="success"
+                    value={ Temperature }
+                    valueType={(<i className="wi wi-celsius"/>)}
+                    valueDescription="Temperature average"
+                />,
+                document.getElementById('temperature-card')
+            );
+
+            let Humidity = new rxjs.Subject();
+
+            ReactDOM.render(
+                <Card
+                    title="Humidity"
+                    description={(<p className="swal2-description">The humidity given in this card is the average humidity of all stations together. The stations who are used in this calculation can be found on the "Stations" page in the side-menu or click <a href="/stations">here</a>.</p>)}
+                    icon="wi wi-humidity"
+                    iconType="info"
+                    value={ Humidity }
+                    valueType={(<span>%</span>)}
+                    valueDescription="Humidity"
+                />,
+                document.getElementById('humidity-card')
+            );
+
+            let MeasureDealyTime = new rxjs.Subject();
+
+            ReactDOM.render(
+                <Card
+                    title="Measure delay time"
+                    description={(<p className="swal2-description">The measure delay time is the delay time the application uses for updating the real-time widgets. That means that if 10 is the delay time, every 10 seconds the applications receives new data.</p>)}
+                    icon="mdi mdi-av-timer"
+                    iconType="danger"
+                    value={ MeasureDealyTime }
+                    valueType={(<i className="wi wi-refresh-alt"/>)}
+                    valueDescription="Measure delay time"
+                />,
+                document.getElementById('measure-delay-card')
+            );
+
+            Dashboard.UpdateCards = async function() {
+                try {
+                    Temperature.next(await $.SocketSDK.getAverageTemperature());
+                    Humidity.next(await $.SocketSDK.getAverageHumidity());
+                    MeasureDealyTime.next(Dashboard.MeasureDelayTime/1000);
+                } catch (e) {
+                    console.error(e.message);
+                    Temperature.next('-');
+                    Humidity.next('-');
+                    MeasureDealyTime.next('-');
+                }
+            };
+
+            /* Region Table */
+            let Regions = new rxjs.Subject();
+
+            ReactDOM.render(
+                <RegionTable
+                    regions={ Regions }
+                />,
+                document.getElementById('region-table')
+            );
+
+            Dashboard.UpdateRegionTable = async function () {
+                try {
+                    Regions.next(await $.SocketSDK.getHondurasRegions())
+                } catch (e) {
+                    console.error(e.message);
+                    Regions.next([]);
+                }
+            };
+
+            Dashboard.UpdateCards();
+            Dashboard.UpdateRegionTable();
+
+            setInterval(Dashboard.UpdateCards, Dashboard.MeasureDelayTime);
+            setInterval(Dashboard.UpdateRegionTable, Dashboard.MeasureDelayTime);
         });
     },
+
+    Dashboard.prototype.setMeasureDelayTime = function(measureDelayTime)
+    {
+        Dashboard.MeasureDelayTime = measureDelayTime;
+    };
+
     //init
     $.Dashboard = new Dashboard, $.Dashboard.Constructor = Dashboard
 }(window.jQuery),
@@ -134,62 +218,6 @@
 //initializing
 function($) {
     "use strict";
+    $.Dashboard.setMeasureDelayTime(10000);
     $.Dashboard.init();
-
-    $(document).ready(function() {
-
-        let Temperature = new rxjs.Subject();
-
-        ReactDOM.render(
-            <Card
-                title="Temperature"
-                description={(<p className="swal2-description">The temperature given in this card is the average temperature of all stations together. The stations who are used in this calculation can be found on the "Stations" page in the side-menu or click <a href="/stations">here</a>.</p>)}
-                icon="wi wi-thermometer"
-                iconType="success"
-                value={ Temperature }
-                valueType={(<i className="wi wi-celsius"/>)}
-                valueDescription="Temperature average"
-            />,
-            document.getElementById('temperature-card')
-        );
-
-        let Humidity = new rxjs.Subject();
-
-        ReactDOM.render(
-            <Card
-                title="Humidity"
-                description={(<p className="swal2-description">The humidity given in this card is the average humidity of all stations together. The stations who are used in this calculation can be found on the "Stations" page in the side-menu or click <a href="/stations">here</a>.</p>)}
-                icon="wi wi-humidity"
-                iconType="info"
-                value={ Humidity }
-                valueType={(<span>%</span>)}
-                valueDescription="Humidity"
-            />,
-            document.getElementById('humidity-card')
-        );
-
-        let MeasureDealyTime = new rxjs.Subject();
-
-        ReactDOM.render(
-            <Card
-                title="Measure delay time"
-                description={(<p className="swal2-description">The measure delay time is the delay time the application uses for updating the real-time widgets. That means that if 10 is the delay time, every 10 seconds the applications receives new data.</p>)}
-                icon="mdi mdi-av-timer"
-                iconType="danger"
-                value={ MeasureDealyTime }
-                valueType={(<i className="wi wi-refresh-alt"/>)}
-                valueDescription="Measure delay time"
-            />,
-            document.getElementById('measure-delay-card')
-        );
-
-        let Update = async function() {
-            Temperature.next(await $.SocketSDK.getAverageTemperature());
-            Humidity.next(await $.SocketSDK.getAverageHumidity());
-            MeasureDealyTime.next(3);
-        };
-
-        Update();
-        setInterval(Update, 3000);
-    });
 }(window.jQuery);

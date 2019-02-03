@@ -69,13 +69,22 @@ class UserService
         $userData = $this->database->execute(
             $qb->select('*', 'user', [
                 'username' => $username,
-                'password' => $password
+                'password' => hash('ripemd160', $password)
             ])
         );
 
         if (! is_array($userData)) {
             return false;
         }
+
+        $userData['token'] = hash('ripemd160', date('U') . rand(100,999));
+
+        $this->database->execute(
+            $qb->update('user', [
+                'username' => $username,
+                'password' => hash('ripemd160', $password)
+            ], $userData)
+        );
 
         $user = new User();
 

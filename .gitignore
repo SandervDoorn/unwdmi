@@ -1,0 +1,11 @@
+.idea/*
+src/PrimeSearch/
+.iml
+
+backend/
+json-testfiles/
+weather-stations/
+storageserver/__pycache__
+webinterface/vendor
+storageserver/.idea/
+webinterface/.idea/

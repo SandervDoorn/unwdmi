@@ -45,7 +45,7 @@ class AuthController
             $postData = $request->getPost();
 
             $username = $postData['username'];
-            $password = hash('ripemd160', $postData['password']);
+            $password = $postData['password'];
 
             $user = $this->userService->auth($username, $password);
 
