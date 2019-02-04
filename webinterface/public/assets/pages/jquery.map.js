@@ -16,8 +16,8 @@
         /* Region Table */
         $(document).ready(async function() {
 
-            $('#honduras-map-markers').vectorMap({
-                map: 'honduras',
+            $('#map-markers').vectorMap({
+                map: 'north_america_mill',
                 normalizeFunction : 'polynomial',
                 hoverOpacity : 0.7,
                 hoverColor : false,
@@ -41,31 +41,31 @@
                         'stroke-width': 7,
                     }
                 },
-                markers: await $.SocketSDK.getHondurasMarkers(),
+                markers: await $.SocketSDK.getMarkers(),
                 backgroundColor : 'transparent',
                 onMarkerTipShow: async function(event, label, index) {
-                try {
-                    label.html(
-                        '<b>Station: </b>'+ index +'<br/>'+
-                        '<b>Temperature: </b></br>'+
-                        '<b>Humidity: </b>'
-                    );
+                    try {
+                        label.html(
+                            '<b>Station: </b>'+ index +'<br/>'+
+                            '<b>Temperature: </b></br>'+
+                            '<b>Humidity: </b>'
+                        );
 
-                    let sation = await $.SocketSDK.getStation(index);
+                        let sation = await $.SocketSDK.getStation(index);
 
-                    label.html(
-                        '<b>Station: </b>'+ index +'<br/>'+
-                        '<b>Temperature: </b>'+ sation.temperature +'°</br>'+
-                        '<b>Humidity: </b>'+ sation.humidity +'%'
-                    );
-                } catch (e) {
-                    label.html(
-                        '<b>Station: </b>'+ index +'<br/>'+
-                        '<b style="color: red;">' + e.message + '</b>'
-                    );
+                        label.html(
+                            '<b>Station: </b>'+ index +'<br/>'+
+                            '<b>Temperature: </b>'+ sation.temperature +'°</br>'+
+                            '<b>Humidity: </b>'+ sation.humidity +'%'
+                        );
+                    } catch (e) {
+                        label.html(
+                            '<b>Station: </b>'+ index +'<br/>'+
+                            '<b style="color: red;">' + e.message + '</b>'
+                        );
+                    }
                 }
-            }
-        });
+            });
 
         });
 

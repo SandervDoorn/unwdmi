@@ -105,6 +105,11 @@
         return SocketSDK.prototype.request('get_archive', arguments)
     };
 
+    SocketSDK.prototype.getMarkers = function ()
+    {
+        return SocketSDK.prototype.request('get_markers', arguments)
+    };
+
     //init
     $.SocketSDK = new SocketSDK, $.SocketSDK.Constructor = SocketSDK
 }(window.jQuery),

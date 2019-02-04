@@ -15,6 +15,47 @@
     {
 
         $(document).ready(async function() {
+            console.log('test');
+
+            let hondurasMarkers = await $.SocketSDK.getHondurasMarkers();
+
+            let lngLeft = -89.35;
+            let lngRight = -83.13;
+            let latTop = 16.5;
+            let latBottom = 13;
+
+            let coordRight = 1000;
+            let coordTop = 150;
+            let coordBottom = 735;
+
+            console.log(hondurasMarkers);
+
+            let markers = {};
+            $.map(hondurasMarkers, function(value, key) {
+                let lat = value.latLng[0];
+                let lng = value.latLng[1];
+
+                let latCoord = lat - latBottom;
+                let latScale = latCoord / (latTop - latBottom);
+
+                let lngCoord = lng - lngRight;
+                let lngScale = lngCoord / (lngLeft - lngRight);
+
+                let coord = [
+                    coordRight - (lngScale * coordRight),
+                    ((coordBottom - coordTop) - (latScale * (coordBottom - coordTop))) + coordTop
+                ];
+
+                let marker = {
+                    coords: coord,
+                    name: value.name
+                };
+
+                markers[key] = marker;
+            });
+
+            console.log(markers);
+
             $('#honduras-map-markers').vectorMap({
                 map: 'honduras',
                 normalizeFunction : 'polynomial',
@@ -40,7 +81,7 @@
                         'stroke-width': 7,
                     }
                 },
-                markers: await $.SocketSDK.getHondurasMarkers(),
+                markers: markers,
                 backgroundColor : 'transparent',
                 onMarkerTipShow: async function(event, label, index) {
                     try {
