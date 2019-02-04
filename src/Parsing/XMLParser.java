@@ -133,54 +133,39 @@ public class XMLParser {
     private Double updatePreviousMeasurements(String  measurementType, Double value) throws Exception
     {
         List<Double> list;
-
-        if (measurementType.equals("TEMP")) {
-            list = this.previousTemperatures;
-        } else {
-            list = this.previousDewpoints;
-        }
-
-        Double sum = 0.0;
         Double average = 0.0;
         Double lastMeasurement = 0.0;
 
-        if (list.size() > 0) {
-            for (Double historicValue : list) {
-                sum += historicValue;
-            }
+        list = measurementType.equals("TEMP") ? this.previousTemperatures : this.previousDewpoints;
 
-            average = sum / list.size();
-            try {
-                lastMeasurement = list.get(list.size() - 1);
-            } catch (IndexOutOfBoundsException ex) {
-                System.out.println(list.size());
-            }
+        if (list.size() > 0) {
+            average = this.getAverage(list);
+            lastMeasurement = list.get(list.size() - 1);
         }
 
         //If either the value is missing or we are receiving incorrect data, extrapolate from history
-        if (value == null || (value > 1.5 * lastMeasurement || value < 1.5 * lastMeasurement && lastMeasurement != 0)) {
+        if (value == null) {
             value = average;
+        } else if (value + 5 > 1.2 * lastMeasurement + 5 || value + 5 < 1.2 * lastMeasurement + 5 && lastMeasurement != 0) {
+            value = lastMeasurement;
         }
-
-        try {
-            if (list.size() >= 30) {
-                list.remove(0);
-            }
-        } catch (IndexOutOfBoundsException ex) {
-            System.out.println(ex.getStackTrace().toString());
-        }
-
-        list.add(value);
 
         if (measurementType.equals("TEMP")) {
-            this.previousTemperatures = list;
+            this.previousTemperatures = this.updateList(list, value);
         } else {
-            this.previousDewpoints = list;
+            this.previousDewpoints = this.updateList(list, value);
         }
 
         return value;
     }
 
+    /**
+     * Returns the value of a specified element
+     * 
+     * @param type
+     * @param element
+     * @return
+     */
     private String getValueFromElement(String type, Element element)
     {
         return element.getElementsByTagName(type)
@@ -203,6 +188,28 @@ public class XMLParser {
         return this.roundNumber(humidity);
     }
 
+    /**
+     * Adds the value to the list and checks if it needs to remove first entry if list is larger than 30
+     *
+     * @param list
+     * @param value
+     * @return
+     */
+    private List<Double> updateList(List<Double> list, Double value)
+    {
+        try {
+            if (list.size() >= 30) {
+                list.remove(0);
+            }
+        } catch (Exception ex) {
+            System.out.println("Could not remove first element from list");
+        }
+
+        list.add(value);
+
+        return list;
+    }
+
 
     /**
      * Rounds a number to two decimals
@@ -216,5 +223,22 @@ public class XMLParser {
         decimalValue = decimalValue.setScale(2, RoundingMode.HALF_UP);
 
         return decimalValue.doubleValue();
+    }
+
+    /**
+     * Returns the average of the given list
+     *
+     * @param list
+     * @return
+     */
+    private Double getAverage(List<Double> list)
+    {
+        Double sum = 0.0;
+
+        for (Double historicValue : list) {
+            sum += historicValue;
+        }
+
+        return sum / list.size();
     }
 }

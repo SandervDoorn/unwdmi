@@ -8,8 +8,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class DataSaver {
-    private String dataserverAddress;
-    private Integer dataserverPort;
+    private String address;
+    private Integer port;
     private PrintWriter out;
 
     /**
@@ -20,8 +20,8 @@ public class DataSaver {
      */
     public DataSaver(String dataserverAddress, Integer dataserverPort)
     {
-        this.dataserverAddress = dataserverAddress;
-        this.dataserverPort = dataserverPort;
+        this.address = dataserverAddress;
+        this.port = dataserverPort;
     }
 
     /**
@@ -33,7 +33,7 @@ public class DataSaver {
     public boolean connect() throws Exception {
         try {
             SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-            SSLSocket socket = (SSLSocket) factory.createSocket(this.dataserverAddress, this.dataserverPort);
+            SSLSocket socket = (SSLSocket) factory.createSocket(this.address, this.port);
 
             socket.startHandshake();
 
