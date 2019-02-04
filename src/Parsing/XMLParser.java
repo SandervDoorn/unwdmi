@@ -146,8 +146,8 @@ public class XMLParser {
         //If either the value is missing or we are receiving incorrect data, extrapolate from history
         if (value == null) {
             value = average;
-        } else if (Math.abs(value) + 5 > 1.2 * Math.abs(lastMeasurement) + 5 ||
-                Math.abs(value) + 5 < 1.2 * Math.abs(lastMeasurement) + 5 && lastMeasurement != 0) {
+        } else if (Math.abs(value) + 5 > 1.2 * (Math.abs(lastMeasurement) + 5) ||
+                Math.abs(value) + 5 < 1.2 * (Math.abs(lastMeasurement) + 5) && lastMeasurement != 0) {
             value = lastMeasurement;
         }
 
