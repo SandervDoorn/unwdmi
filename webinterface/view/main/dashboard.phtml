@@ -1,10 +1,14 @@
+<link href="/plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+<link href="/plugins/sweet-alert/sweetalert2.min.css" rel="stylesheet" />
+<link href="https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table-all.min.css" rel="stylesheet" />
+
 <!-- Page-Title -->
 <div class="row">
     <div class="col-sm-12">
         <div class="page-title-box">
             <h4 class="page-title">Welcome <?php echo $this->user->display_name ?>!</h4>
             <ol class="breadcrumb float-right">
-                <li class="breadcrumb-item"><a href="#">Minton</a></li>
+                <li class="breadcrumb-item"><a href="#">Lacthosa</a></li>
                 <li class="breadcrumb-item active">Dashboard</li>
             </ol>
             <div class="clearfix"></div>
@@ -14,83 +18,33 @@
 
 
 <div class="row">
-    <div class="col-lg-6 col-xl-3">
-        <div class="widget-bg-color-icon card-box">
-            <div class="bg-icon bg-icon-success pull-left">
-                <i class="fa fa-thermometer-empty text-success"></i>
-            </div>
-            <div class="text-right">
-                <h3 class="text-dark m-t-10"><b class="counter">17</b> &deg;</h3>
-                <p class="text-muted mb-0">Temperature (Avg.)</p>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-    </div>
-    <div class="col-lg-6 col-xl-3">
-        <div class="widget-bg-color-icon card-box fadeInDown animated">
-            <div class="bg-icon bg-icon-primary pull-left">
-                <i class=" ti-money text-info"></i>
-            </div>
-            <div class="text-right">
-                <h3 class="text-dark m-t-10"><b class="counter">31,570</b></h3>
-                <p class="text-muted mb-0">Total Revenue</p>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-    </div>
-
-    <div class="col-lg-6 col-xl-3">
-        <div class="widget-bg-color-icon card-box">
-            <div class="bg-icon bg-icon-danger pull-left">
-                <i class="ti-shopping-cart text-pink"></i>
-            </div>
-            <div class="text-right">
-                <h3 class="text-dark m-t-10"><b class="counter">280</b></h3>
-                <p class="text-muted mb-0">Today's Sales</p>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-    </div>
-
-    <div class="col-lg-6 col-xl-3">
-        <div class="widget-bg-color-icon card-box">
-            <div class="bg-icon bg-icon-purple pull-left">
-                <i class="ti-stats-up text-purple"></i>
-            </div>
-            <div class="text-right">
-                <h3 class="text-dark m-t-10"><b class="counter">0.16</b>%</h3>
-                <p class="text-muted mb-0">Conversion</p>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-    </div>
+    <div class="col-lg-6 col-xl-4" id="temperature-card"></div>
+    <div class="col-lg-6 col-xl-4" id="humidity-card"></div>
+    <div class="col-lg-12 col-xl-4" id="measure-delay-card"></div>
 </div>
 <!-- end row -->
 
 
 <div class="row">
-    <div class="col-lg-7">
+
+    <div class="col-lg-6">
         <div class="card-box">
-            <h4 class="text-dark  header-title m-t-0 m-b-30">Total Revenue</h4>
-
-            <div class="widget-chart text-center">
-                <div id="dashboard-chart-1" style="height: 300px;"></div>
-
-            </div>
+            <h4 class="header-title m-t-0"><a href="/map" class="text-dark">Station Visualisation Honduras</a></h4>
+            <p class="text-muted m-b-10 font-13" style="border-bottom: 1px solid #eee; padding-bottom:10px;">
+                Real-time visualisation of Honduras. Provided with temperature and humidity over stations.
+            </p>
+            <div id="honduras-map-markers" style="height: 300px;"></div>
         </div>
-
     </div>
 
-    <div class="col-lg-5">
+    <div class="col-lg-6">
         <div class="card-box">
-            <h4 class="text-dark  header-title m-t-0 m-b-30">Yearly Sales Report</h4>
-
-            <div class="widget-chart text-center">
-                <div id="morris-donut-example" style="height: 300px;"></div>
-
-            </div>
+            <h4 class="header-title m-t-0"><a href="/map" class="text-dark">Station Visualisation USA</a></h4>
+            <p class="text-muted m-b-10 font-13" style="border-bottom: 1px solid #eee; padding-bottom:10px;">
+                Real-time visualisation of the United States of America. Provided with temperature and humidity over stations.
+            </p>
+            <div id="america-map-markers" style="height: 300px;"></div>
         </div>
-
     </div>
 
 </div>
@@ -101,62 +55,12 @@
 <div class="row">
     <div class="col-lg-8">
         <div class="card-box">
-            <h4 class="text-dark  header-title m-t-0">Latest Measurements</h4>
+            <h4 class="text-dark header-title m-t-0">Region Measurements</h4>
             <p class="text-muted m-b-25 font-13">
-                The latest measurements, the average per hour
+                The latest measurements, grouped by region
             </p>
 
-            <div class="table-responsive">
-                <table class="table mb-0">
-                    <thead>
-                    <tr>
-                        <th>Measure time</th>
-                        <th>Location</th>
-                        <th>Measurement</th>
-                        <th>Humidity</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>20:10:52</td>
-                        <td>Honduars North</td>
-                        <td>17 &deg;</td>
-                        <td>73 %</td>
-                        <td><span class="badge badge-success">OK</span></td>
-                    </tr>
-                    <tr>
-                        <td>20:10:49</td>
-                        <td>Honduars West</td>
-                        <td>16 &deg;</td>
-                        <td>89 %</td>
-                        <td><span class="badge badge-success">OK</span></td>
-                    </tr>
-                    <tr>
-                        <td>20:10:41</td>
-                        <td>Honduars East</td>
-                        <td>16 &deg;</td>
-                        <td>76 %</td>
-                        <td><span class="badge badge-success">OK</span></td>
-                    </tr>
-                    <tr>
-                        <td>20:10:38</td>
-                        <td>Honduars South</td>
-                        <td>18 &deg;</td>
-                        <td>82 %</td>
-                        <td><span class="badge badge-success">OK</span></td>
-                    </tr>
-                    <tr>
-                        <td>20:10:35</td>
-                        <td>Honduars North</td>
-                        <td>17 &deg;</td>
-                        <td>72 %</td>
-                        <td><span class="badge badge-success">OK</span></td>
-                    </tr>
-
-                    </tbody>
-                </table>
-            </div>
+            <div id="region-table"></div>
         </div>
     </div>
     <!-- end col -8 -->
@@ -164,7 +68,7 @@
     <div class="col-lg-4">
 
         <a href="mailto:niels.doornbos@softenco.com?subject=Support Request" style="color: #4c5667">
-            <div class="card-box widget-user">
+            <div class="card-box widget-user hoverable">
                 <div>
                     <i class="fa fa-handshake-o float-left" style="font-size: 55px; margin-top: 10px"></i>
                     <div class="wid-u-info">
@@ -178,7 +82,7 @@
         </a>
 
         <a href="mailto:redmar.bakker@softenco.com?subject=Support Request" style="color: #4c5667">
-            <div class="card-box widget-user">
+            <div class="card-box widget-user hoverable">
                 <div>
                     <i class="fa fa-question-circle-o float-left" style="font-size: 80px; margin: -5px 0px;"></i>
                     <div class="wid-u-info">
@@ -191,7 +95,7 @@
         </a>
 
         <a href="mailto:martin.vinke@softenco.com?subject=Support Request" style="color: #4c5667">
-            <div class="card-box widget-user">
+            <div class="card-box widget-user hoverable">
                 <div>
                     <i class="fa fa-thermometer-empty float-left" style="font-size: 70px; margin-left: 16px"></i>
                     <div class="wid-u-info">
@@ -204,7 +108,7 @@
         </a>
 
         <a href="mailto:sander.van.doorn@softenco.com?subject=Support Request" style="color: #4c5667">
-            <div class="card-box widget-user">
+            <div class="card-box widget-user hoverable">
                 <div>
                     <i class="fa fa-file-archive-o float-left" style="font-size: 70px; margin-left: 7px"></i>
                     <div class="wid-u-info">
@@ -220,3 +124,17 @@
 
 </div>
 <!-- end row -->
+
+<!-- PLUGINS -->
+<?php \App\LayoutModel::appendScript('/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js') ?>
+<?php \App\LayoutModel::appendScript('/plugins/jvectormap/jquery-jvectormap-honduras.js') ?>
+<?php \App\LayoutModel::appendScript('/plugins/jvectormap/jquery-jvectormap-us-aea-en.js') ?>
+<?php \App\LayoutModel::appendScript('https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table.min.js') ?>
+<?php \App\LayoutModel::appendScript('/plugins/sweet-alert/sweetalert2.min.js') ?>
+
+<!-- COMPONENTS -->
+<?php \App\LayoutModel::appendScript('/assets/components/card.component.js', 0, 'text/babel') ?>
+<?php \App\LayoutModel::appendScript('/assets/components/region-table.component.js', 0, 'text/babel') ?>
+
+<!-- CONTROLLER -->
+<?php \App\LayoutModel::appendScript('/assets/pages/jquery.dashboard.js', 0, 'text/babel') ?>

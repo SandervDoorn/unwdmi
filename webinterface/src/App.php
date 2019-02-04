@@ -9,11 +9,19 @@
 namespace App;
 
 use App\Controller\AuthController;
+use App\Controller\ConsoleController;
 use App\Controller\ErrorController;
 use App\Controller\IndexController;
 use App\Entity\User;
 
+global $_ARGUMENTS;
+
 class App {
+
+    /**
+     * @var array
+     * */
+    private $config = [];
 
     /**
      * @var Router
@@ -24,17 +32,23 @@ class App {
         IndexController::class,
         AuthController::class,
         ErrorController::class,
+        ConsoleController::class
     ];
 
     public function __construct(array $appConfig)
     {
-        $this->buildRoutes($appConfig['router']);
+        if(php_sapi_name() == 'cli') {
+            $this->buildRoutes($appConfig['router']['console-routes']);
+            array_shift($_SERVER['ARGUMENTS']);
+            $_SERVER['REQUEST_URI'] = join(' ', $_SERVER['ARGUMENTS']);
+        } else {
+            $this->buildRoutes($appConfig['router']['http-routes']);
+        }
     }
 
     public function buildRoutes(array $config) {
         $this->router = new Router();
-
-        $this->router->build($config['routes']);
+        $this->router->build($config);
     }
 
     public function run()

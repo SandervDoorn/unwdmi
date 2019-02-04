@@ -9,65 +9,215 @@
 
     var Dashboard = function() {};
 
-    //creates Stacked chart
-    Dashboard.prototype.createStackedChart  = function(element, data, xkey, ykeys, labels, lineColors) {
-        Morris.Bar({
-            element: element,
-            data: data,
-            xkey: xkey,
-            ykeys: ykeys,
-            stacked: true,
-            labels: labels,
-            hideHover: 'auto',
-            barSizeRatio: 0.5,
-            resize: true, //defaulted to true
-            gridLineColor: '#eeeeee',
-            barColors: lineColors
+    Dashboard.MeasureDelayTime = 10000;
+
+    Dashboard.prototype.init = function()
+    {
+
+        $(document).ready(async function() {
+            $('#honduras-map-markers').vectorMap({
+                map: 'honduras',
+                normalizeFunction : 'polynomial',
+                hoverOpacity : 0.7,
+                hoverColor : false,
+                regionStyle : {
+                    initial : {
+                        fill : '#4c5667'
+                    }
+                },
+                markerStyle: {
+                    initial: {
+                        r: 9,
+                        'fill': '#003fa4',
+                        'fill-opacity': 1,
+                        'stroke': '#fff',
+                        'stroke-width' : 7,
+                        'stroke-opacity': 0.4
+                    },
+                    hover: {
+                        'stroke': '#bbb',
+                        'fill-opacity': 1,
+                        'stroke-width': 7,
+                    }
+                },
+                markers: await $.SocketSDK.getHondurasMarkers(),
+                backgroundColor : 'transparent',
+                onMarkerTipShow: async function(event, label, index) {
+                    try {
+                        label.html(
+                            '<b>Station: </b>'+ index +'<br/>'+
+                            '<b>Temperature: </b></br>'+
+                            '<b>Humidity: </b>'
+                        );
+
+                        let sation = await $.SocketSDK.getStation(index);
+
+                        label.html(
+                            '<b>Station: </b>'+ index +'<br/>'+
+                            '<b>Temperature: </b>'+ sation.temperature +'°</br>'+
+                            '<b>Humidity: </b>'+ sation.humidity +'%'
+                        );
+                    } catch (e) {
+                        label.html(
+                            '<b>Station: </b>'+ index +'<br/>'+
+                            '<b style="color: red;">' + e.message + '</b>'
+                        );
+                    }
+                }
+            });
+
+            $('#america-map-markers').vectorMap({
+                map: 'us_aea_en',
+                normalizeFunction : 'polynomial',
+                hoverOpacity : 0.7,
+                hoverColor : false,
+                regionStyle : {
+                    initial : {
+                        fill : '#4c5667'
+                    }
+                },
+                markerStyle: {
+                    initial: {
+                        r: 9,
+                        'fill': '#003fa4',
+                        'fill-opacity': 1,
+                        'stroke': '#fff',
+                        'stroke-width' : 7,
+                        'stroke-opacity': 0.4
+                    },
+                    hover: {
+                        'stroke': '#bbb',
+                        'fill-opacity': 1,
+                        'stroke-width': 7,
+                    }
+                },
+                markers: await $.SocketSDK.getUSAMarkers(),
+                backgroundColor : 'transparent',
+                onMarkerTipShow: async function(event, label, index) {
+                    try {
+                        label.html(
+                            '<b>Station: </b>'+ index +'<br/>'+
+                            '<b>Temperature: </b></br>'+
+                            '<b>Humidity: </b>'
+                        );
+
+                        let sation = await $.SocketSDK.getStation(index);
+
+                        label.html(
+                            '<b>Station: </b>'+ index +'<br/>'+
+                            '<b>Temperature: </b>'+ sation.temperature +'°</br>'+
+                            '<b>Humidity: </b>'+ sation.humidity +'%'
+                        );
+                    } catch (e) {
+                        label.html(
+                            '<b>Station: </b>'+ index +'<br/>'+
+                            '<b style="color: red;">' + e.message + '</b>'
+                        );
+                    }
+                }
+            });
+
+            /* ----- REACTJS ----- */
+
+            /* Cards */
+            let Temperature = new rxjs.Subject();
+
+            ReactDOM.render(
+                <Card
+                    title="Temperature"
+                    description={(<p className="swal2-description">The temperature given in this card is the average temperature of all stations together. The stations who are used in this calculation can be found on the "Stations" page in the side-menu or click <a href="/stations">here</a>.</p>)}
+                    icon="wi wi-thermometer"
+                    iconType="success"
+                    value={ Temperature }
+                    valueType={(<i className="wi wi-celsius"/>)}
+                    valueDescription="Temperature average"
+                />,
+                document.getElementById('temperature-card')
+            );
+
+            let Humidity = new rxjs.Subject();
+
+            ReactDOM.render(
+                <Card
+                    title="Humidity"
+                    description={(<p className="swal2-description">The humidity given in this card is the average humidity of all stations together. The stations who are used in this calculation can be found on the "Stations" page in the side-menu or click <a href="/stations">here</a>.</p>)}
+                    icon="wi wi-humidity"
+                    iconType="info"
+                    value={ Humidity }
+                    valueType={(<span>%</span>)}
+                    valueDescription="Humidity"
+                />,
+                document.getElementById('humidity-card')
+            );
+
+            let MeasureDealyTime = new rxjs.Subject();
+
+            ReactDOM.render(
+                <Card
+                    title="Measure delay time"
+                    description={(<p className="swal2-description">The measure delay time is the delay time the application uses for updating the real-time widgets. That means that if 10 is the delay time, every 10 seconds the applications receives new data.</p>)}
+                    icon="mdi mdi-av-timer"
+                    iconType="danger"
+                    value={ MeasureDealyTime }
+                    valueType={(<i className="wi wi-refresh-alt"/>)}
+                    valueDescription="Measure delay time"
+                />,
+                document.getElementById('measure-delay-card')
+            );
+
+            Dashboard.UpdateCards = async function() {
+                try {
+                    Temperature.next(await $.SocketSDK.getAverageTemperature());
+                    Humidity.next(await $.SocketSDK.getAverageHumidity());
+                    MeasureDealyTime.next(Dashboard.MeasureDelayTime/1000);
+                } catch (e) {
+                    console.error(e.message);
+                    Temperature.next('-');
+                    Humidity.next('-');
+                    MeasureDealyTime.next('-');
+                }
+            };
+
+            /* Region Table */
+            let Regions = new rxjs.Subject();
+
+            ReactDOM.render(
+                <RegionTable
+                    regions={ Regions }
+                />,
+                document.getElementById('region-table')
+            );
+
+            Dashboard.UpdateRegionTable = async function () {
+                try {
+                    Regions.next(await $.SocketSDK.getHondurasRegions())
+                } catch (e) {
+                    console.error(e.message);
+                    Regions.next([]);
+                }
+            };
+
+            Dashboard.UpdateCards();
+            Dashboard.UpdateRegionTable();
+
+            setInterval(Dashboard.UpdateCards, Dashboard.MeasureDelayTime);
+            setInterval(Dashboard.UpdateRegionTable, Dashboard.MeasureDelayTime);
         });
     },
-    //creates Donut chart
-    Dashboard.prototype.createDonutChart = function(element, data, colors) {
-        Morris.Donut({
-            element: element,
-            data: data,
-            resize: true, //defaulted to true
-            colors: colors
-        });
-    },
 
-    Dashboard.prototype.init = function() {
+    Dashboard.prototype.setMeasureDelayTime = function(measureDelayTime)
+    {
+        Dashboard.MeasureDelayTime = measureDelayTime;
+    };
 
-        //creating Stacked chart
-        var $stckedData  = [
-            { y: '2005', a: 45, b: 180, c: 100 },
-            { y: '2006', a: 75,  b: 65, c: 80 },
-            { y: '2007', a: 100, b: 90, c: 56 },
-            { y: '2008', a: 75,  b: 65, c: 89 },
-            { y: '2009', a: 100, b: 90, c: 120 },
-            { y: '2010', a: 75,  b: 65, c: 110 },
-            { y: '2011', a: 50,  b: 40, c: 85 },
-            { y: '2012', a: 75,  b: 65, c: 52 },
-            { y: '2013', a: 50,  b: 40, c: 77 },
-            { y: '2014', a: 75,  b: 65, c: 90 },
-            { y: '2015', a: 100, b: 90, c: 130 }
-        ];
-            this.createStackedChart('dashboard-chart-1', $stckedData, 'y', ['a', 'b','c'], ['Series A', 'Series B','Series C'], ['#52bb56','#f38280', '#ebeff2']);
-
-        //creating donut chart
-        var $donutData = [
-                {label: "Download Sales", value: 12},
-                {label: "In-Store Sales", value: 30},
-                {label: "Mail-Order Sales", value: 20}
-            ];
-        this.createDonutChart('morris-donut-example', $donutData, ['#f1b53d', '#ebeff2','#03a9f3']);
-
-    },
     //init
     $.Dashboard = new Dashboard, $.Dashboard.Constructor = Dashboard
 }(window.jQuery),
 
+
 //initializing
 function($) {
     "use strict";
+    $.Dashboard.setMeasureDelayTime(10000);
     $.Dashboard.init();
 }(window.jQuery);

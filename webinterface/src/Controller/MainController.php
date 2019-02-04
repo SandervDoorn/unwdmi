@@ -19,4 +19,19 @@ class MainController
         return [];
     }
 
+    public function map()
+    {
+        return [];
+    }
+
+    public function hondurasStations()
+    {
+        return [];
+    }
+
+    public function usaStations()
+    {
+        return [];
+    }
+
 }

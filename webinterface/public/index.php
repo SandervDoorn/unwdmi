@@ -17,6 +17,8 @@ if (php_sapi_name() === 'cli-server') {
     unset($path);
 }
 
+@$_SERVER['ARGUMENTS'] = $argv;
+
 // Setup autoloading
 require 'bootstrap.php';
 

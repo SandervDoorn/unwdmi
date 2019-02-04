@@ -48,7 +48,7 @@ class QueryBuilder
             'UPDATE %s SET %s WHERE %s',
             $table,
             $this->arrayToCondition($data),
-            $this->arrayToCondition($where)
+            $this->arrayToCondition($where, ' AND ')
         );
 
         return $sql;

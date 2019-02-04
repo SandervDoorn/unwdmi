@@ -47,19 +47,44 @@ class UserService
         session_destroy();
     }
 
-    public function auth(string $username, string $password)
+    public function authorize(string $token)
     {
         $qb = new QueryBuilder();
         $userData = $this->database->execute(
             $qb->select('*', 'user', [
-                'username' => $username,
-                'password' => $password
+                'token' => $token,
             ])
         );
 
         if (! is_array($userData)) {
             return false;
         }
+
+        return true;
+    }
+
+    public function auth(string $username, string $password)
+    {
+        $qb = new QueryBuilder();
+        $userData = $this->database->execute(
+            $qb->select('*', 'user', [
+                'username' => $username,
+                'password' => hash('ripemd160', $password)
+            ])
+        );
+
+        if (! is_array($userData)) {
+            return false;
+        }
+
+        $userData['token'] = hash('ripemd160', date('U') . rand(100,999));
+
+        $this->database->execute(
+            $qb->update('user', [
+                'username' => $username,
+                'password' => hash('ripemd160', $password)
+            ], $userData)
+        );
 
         $user = new User();
 

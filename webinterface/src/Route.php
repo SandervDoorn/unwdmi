@@ -18,7 +18,7 @@ class Route {
     /**
      * @var string
      */
-    private $url;
+    private $route;
 
     /**
      * @var string
@@ -43,7 +43,7 @@ class Route {
     public function __construct(string $name, array $config)
     {
         $this->setName($name);
-        $this->setUrl($config['url']);
+        $this->setRoute($config['route']);
         $this->setController($config['controller']);
         $this->setAction($config['action']);
         $this->setTemplate($config['template'] ?? '');
@@ -69,17 +69,17 @@ class Route {
     /**
      * @return string
      */
-    public function getUrl()
+    public function getRoute()
     {
-        return $this->url;
+        return $this->route;
     }
 
     /**
-     * @param string $url
+     * @param string $route
      */
-    public function setUrl($url)
+    public function setRoute($route)
     {
-        $this->url = $url;
+        $this->route = $route;
     }
 
     /**

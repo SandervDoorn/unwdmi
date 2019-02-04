@@ -17,7 +17,11 @@ class ViewModel
 
     public $content;
 
+    /**
+     * @var User
+     * */
     public $user;
+
 
     public function __construct(array $data = [])
     {
