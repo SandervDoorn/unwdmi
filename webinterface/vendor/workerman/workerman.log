@@ -1043,3 +1043,27 @@ Stack trace:
 2019-02-04 20:48:59 pid:12554 Workerman[index.php] stopping ...
 2019-02-04 20:48:59 pid:12554 Workerman[index.php] has been stopped
 2019-02-04 20:49:00 pid:12724 Workerman[public/index.php] start in DEBUG mode
+2019-02-04 21:20:17 pid:12724 Workerman[index.php] stopping ...
+2019-02-04 21:20:17 pid:12724 Workerman[index.php] has been stopped
+2019-02-04 21:20:30 pid:14493 Workerman[public/index.php] start in DEBUG mode
+2019-02-04 21:20:34 pid:14497 Worker[14497] process terminated
+2019-02-04 21:21:07 pid:14493 Workerman[index.php] stopping ...
+2019-02-04 21:21:07 pid:14493 Workerman[index.php] has been stopped
+2019-02-04 21:21:07 pid:14501 Workerman[public/index.php] start in DEBUG mode
+2019-02-04 21:21:11 pid:14505 Worker[14505] process terminated
+2019-02-04 21:21:29 pid:14501 Workerman[index.php] stopping ...
+2019-02-04 21:21:29 pid:14501 Workerman[index.php] has been stopped
+2019-02-04 21:21:31 pid:14517 Workerman[public/index.php] start in DEBUG mode
+2019-02-04 21:21:36 pid:14520 Worker[14520] process terminated
+2019-02-04 21:21:56 pid:14517 Workerman[index.php] stopping ...
+2019-02-04 21:21:56 pid:14517 Workerman[index.php] has been stopped
+2019-02-04 21:21:57 pid:14552 Workerman[public/index.php] start in DEBUG mode
+2019-02-04 21:22:01 pid:14555 Worker[14555] process terminated
+2019-02-04 21:22:48 pid:14552 Workerman[index.php] stopping ...
+2019-02-04 21:22:48 pid:14552 Workerman[index.php] has been stopped
+2019-02-04 21:22:48 pid:14569 Workerman[public/index.php] start in DEBUG mode
+2019-02-04 21:22:49 pid:14572 Worker[14572] process terminated
+2019-02-04 21:23:03 pid:14574 Worker[14574] process terminated
+2019-02-04 21:23:05 pid:14569 Workerman[index.php] stopping ...
+2019-02-04 21:23:05 pid:14569 Workerman[index.php] has been stopped
+2019-02-04 21:23:06 pid:14583 Workerman[public/index.php] start in DEBUG mode

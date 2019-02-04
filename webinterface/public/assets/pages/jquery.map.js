@@ -48,7 +48,8 @@
                         label.html(
                             '<b>Station: </b>'+ index +'<br/>'+
                             '<b>Temperature: </b></br>'+
-                            '<b>Humidity: </b>'
+                            '<b>Humidity: </b></br>' +
+                            '<b>Dewpoint: </b>'
                         );
 
                         let sation = await $.SocketSDK.getStation(index);
@@ -56,7 +57,8 @@
                         label.html(
                             '<b>Station: </b>'+ index +'<br/>'+
                             '<b>Temperature: </b>'+ sation.temperature +'°</br>'+
-                            '<b>Humidity: </b>'+ sation.humidity +'%'
+                            '<b>Humidity: </b>'+ sation.humidity +'% </br>' +
+                            '<b>Dewpoint: </b>'+ sation.dewpoint +'°'
                         );
                     } catch (e) {
                         label.html(
