@@ -21,14 +21,14 @@ class StationTable extends React.Component {
         swal({
             title: 'Archives?',
             type: 'info',
-            html: '<p>Do you want to download the archives from ' + station.name + ' in csv here?</p>',
+            html: '<p>Do you want to download the archives from ' + station.name + ' in csv format?</p>',
             showCloseButton: true,
             showConfirmButton: true,
-            confirmButtonText: '<i class="fa fa-archive" /> Download'
+            confirmButtonText: '<i class="fa fa-archive"></i> Download'
         }).then(async (result) => {
             let csvContent = 'data:text/csv;charset=utf-8,' + await $.SocketSDK.getArchive(station.id);
-            var encodedUri = encodeURI(csvContent);
-            var link = document.createElement("a");
+            let encodedUri = encodeURI(csvContent);
+            let link = document.createElement("a");
             link.setAttribute('href', encodedUri);
             link.setAttribute('download', 'station-' + station.id + '.csv');
             document.body.appendChild(link); // Required for FF

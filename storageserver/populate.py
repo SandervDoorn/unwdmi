@@ -8,14 +8,14 @@ if not os.path.isdir('weather-stations'):
     os.mkdir('weather-stations')
 
 # ===========Create folders for all weatherstations==========
-with open('../src/weather_stations.csv', 'r') as f:
+with open('../src/weerstations.csv', 'r') as f:
     reader = csv.reader(f)
     print("Creating folders...")
     for row in reader:
         if len(row) != 0:
             if not os.path.isdir('weather-stations/' + row[0]):
-                if 'INSERT' in row[0]:
-                    break
+                #if 'INSERT' in row[0]:
+                #    break
                 os.mkdir('weather-stations/' + row[0])
 
 # =========Populating folders with csv files==========
