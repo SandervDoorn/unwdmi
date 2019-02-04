@@ -70,27 +70,28 @@ def listener():
                     sock.close()
 
 
-def sender():
-    """
-    Starts a socket that listens for web-interface requests for live information on specific weather stations
-    :return:
-    """
-    HOST = config['web-interface']['host']
-    PORT = int(config['web-interface']['port'])
-
-    while True:
-        with socket(AF_INET, SOCK_STREAM) as sock:
-            sock.bind((HOST, PORT))
-            sock.listen(30)
-            try:
-                conn, addr = sock.accept()
-                with conn:
-                    returndata = json.dumps(last_data())
-                    conn.sendall(returndata.encode())
-            except (ConnectionResetError, ConnectionError, ConnectionAbortedError, ConnectionRefusedError):
-                print("Connection terminated, restarting socket...")
+# def sender():
+#       Function omitted as it is not longer in use, code remains for future purposes
+#     """
+#     Starts a socket that listens for web-interface requests for live information on specific weather stations
+#     :return:
+#     """
+#     HOST = config['web-interface']['host']
+#     PORT = int(config['web-interface']['port'])
+#
+#     while True:
+#         with socket(AF_INET, SOCK_STREAM) as sock:
+#             sock.bind((HOST, PORT))
+#             sock.listen(30)
+#             try:
+#                 conn, addr = sock.accept()
+#                 with conn:
+#                     returndata = json.dumps(last_data())
+#                     conn.sendall(returndata.encode())
+#             except (ConnectionResetError, ConnectionError, ConnectionAbortedError, ConnectionRefusedError):
+#                 print("Connection terminated, restarting socket...")
                 sock.close()
 
 
 threading.Thread(target=listener).start()
-threading.Thread(target=sender).start()
+# threading.Thread(target=sender).start()
