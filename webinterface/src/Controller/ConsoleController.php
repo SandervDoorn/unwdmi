@@ -80,101 +80,22 @@ class ConsoleController
             return $this->getStation($stationId);
         }));
 
+        $socket->on('get_markers', $this->socket($socket, function() use ($socket) {
+            echo "get_markers\n";
+
+            return $this->getUSAMarkers() + $this->getHondurasMarkers() + $this->getOtherMarkers();
+        }));
+
         $socket->on('get_usa_markers', $this->socket($socket, function() use ($socket) {
             echo "get_usa_markers\n";
 
-            $stations = $this->getStationsInfo();
-
-            if ($stations == false) {
-                throw new \Exception('Unable to load stationmarkers');
-            }
-
-            $availableStations = $this->getAvailableStations();
-
-            $humidityArray = [];
-            foreach ($stations as $stationInfo) {
-                if ($stationInfo['country'] != "'UNITED STATES'") {
-                    continue;
-                }
-
-                if (! in_array($stationInfo['id'], $availableStations)) {
-                    continue;
-                }
-
-                try {
-                    $stationData = $this->getStation($stationInfo['id']);
-                } catch (\Exception $e) {
-                    continue;
-                }
-
-                if ($stationData == false) {
-                    continue;
-                }
-
-                $humidityArray[$stationData['humidity'] . $stationInfo['id']] = $stationInfo;
-            }
-
-            ksort($humidityArray);
-            $relevantStations = array_slice($humidityArray, 0, 15);
-
-            $data = [];
-            foreach ($relevantStations as $station) {
-                $data[$station['id']] = [
-                    'latLng' => [$station['lat'], $station['lng']],
-                    'name' => $station['name']
-                ];
-            }
-
-            return $data;
+            return $this->getUSAMarkers();
         }));
 
         $socket->on('get_honduras_markers', $this->socket($socket, function() use ($socket) {
             echo "get_honduras_markers\n";
 
-            $stations = $this->getStationsInfo();
-
-            if ($stations == false) {
-                throw new \Exception('Unable to load stationmarkers');
-            }
-
-            $availableStations = $this->getAvailableStations();
-
-            $humidityArray = [];
-            foreach ($stations as $stationInfo) {
-                if ($stationInfo['country'] != "'HONDURAS'") {
-                    continue;
-                }
-
-                if (! in_array($stationInfo['id'], $availableStations)) {
-                    continue;
-                }
-
-                try {
-                    $stationData = $this->getStation($stationInfo['id']);
-                } catch (\Exception $e) {
-                    continue;
-                }
-
-                if ($stationData == false) {
-                    continue;
-                }
-
-                $humidityArray[$stationData['humidity'] . $stationInfo['id']] = $stationInfo;
-            }
-
-            ksort($humidityArray);
-            $relevantStations = array_slice($humidityArray, 0, 15);
-
-            $data = [];
-            foreach ($relevantStations as $station) {
-                $data[$station['id']] = [
-                    'latLng' => [$station['lat'], $station['lng']],
-                    'name' => $station['name']
-                ];
-            }
-
-            echo "result\n";
-            return $data;
+            return $this->getHondurasMarkers();
         }));
 
         $socket->on('get_average_temperature', $this->socket($socket, function() use ($socket) {
@@ -378,13 +299,139 @@ class ConsoleController
             return $stationArray;
         }));
 
-        $socket->on('get_archive', $this->socket($socket, function($stationId) use ($socket) {
-            echo "get_archive\n";
+        $socket->on('get_archive_day_report', $this->socket($socket, function($stationId) use ($socket) {
+            echo "get_archive_day_report\n";
 
-            $date = new \DateTime('now-1day');
+            $date = new \DateTime();
+            $date->setTimezone(new \DateTimeZone('Europe/Amsterdam'));
+
             return @file_get_contents(__DIR__ . '/../../../storageserver/weather-stations/' . $stationId . '/' . $date->format('d-m-Y') . '.csv', 'r');
         }));
 
+        $socket->on('get_archive_averages', $this->socket($socket, function($stationId) use ($socket) {
+            echo "get_archive_averages\n";
+
+            $date = new \DateTime();
+            $date->setTimezone(new \DateTimeZone('Europe/Amsterdam'));
+
+            return @file_get_contents(__DIR__ . '/../../../storageserver/weather-stations/' . $stationId . '/averages.csv', 'r');
+        }));
+
+    }
+
+    public function getUSAMarkers()
+    {
+        $stations = $this->getStationsInfo();
+
+        if ($stations == false) {
+            throw new \Exception('Unable to load stationmarkers');
+        }
+
+        $availableStations = $this->getAvailableStations();
+
+        $humidityArray = [];
+        foreach ($stations as $stationInfo) {
+            if ($stationInfo['country'] != "'UNITED STATES'") {
+                continue;
+            }
+
+            if (! in_array($stationInfo['id'], $availableStations)) {
+                continue;
+            }
+
+            try {
+                $stationData = $this->getStation($stationInfo['id']);
+            } catch (\Exception $e) {
+                continue;
+            }
+
+            if ($stationData == false) {
+                continue;
+            }
+
+            $humidityArray[$stationData['humidity'] . $stationInfo['id']] = $stationInfo;
+        }
+
+        ksort($humidityArray);
+        $relevantStations = array_slice($humidityArray, 0, 15);
+
+        $data = [];
+        foreach ($relevantStations as $station) {
+            $data[$station['id']] = [
+                'latLng' => [$station['lat'], $station['lng']],
+                'name' => $station['name']
+            ];
+        }
+
+        return $data;
+    }
+
+    public function getHondurasMarkers()
+    {
+        $stations = $this->getStationsInfo();
+
+        if ($stations == false) {
+            throw new \Exception('Unable to load stationmarkers');
+        }
+
+        $availableStations = $this->getAvailableStations();
+
+        $stationArray = [];
+        foreach ($stations as $stationInfo) {
+            if ($stationInfo['country'] != "'HONDURAS'") {
+                continue;
+            }
+
+            if (! in_array($stationInfo['id'], $availableStations)) {
+                continue;
+            }
+
+            try {
+                $this->getStation($stationInfo['id']);
+            } catch (\Exception $e) {
+                continue;
+            }
+
+            $stationArray[] = $stationInfo;
+        }
+
+        $data = [];
+        foreach ($stationArray as $station) {
+            $data[$station['id']] = [
+                'latLng' => [$station['lat'], $station['lng']],
+                'name' => $station['name']
+            ];
+        }
+
+        return $data;
+    }
+
+    public function getOtherMarkers()
+    {
+        $stations = $this->getStationsInfo();
+
+        if ($stations == false) {
+            throw new \Exception('Unable to load stationmarkers');
+        }
+
+        $stationArray = [];
+        foreach ($stations as $stationInfo) {
+            if (in_array($stationInfo['country'], ["'HONDURAS'", "'UNITED STATES'"])) {
+                continue;
+            }
+
+            $stationArray[] = $stationInfo;
+        }
+
+        $data = [];
+        foreach ($stationArray as $station) {
+            $data[$station['id']] = [
+                'latLng' => [$station['lat'], $station['lng']],
+                'name' => $station['name']
+            ];
+        }
+
+        return $data;
     }
 
     public function getAvailableStations()
@@ -402,7 +449,9 @@ class ConsoleController
 
     public function getStation($stationId)
     {
-        $date = new \DateTime('now-1day');
+        $date = new \DateTime();
+        $date->setTimezone(new \DateTimeZone('Europe/Amsterdam'));
+
         $csvData = @file_get_contents(__DIR__ . '/../../../storageserver/weather-stations/' . $stationId . '/' . $date->format('d-m-Y') . '.csv', 'r');
 
         if ($csvData == null || $csvData == false) {

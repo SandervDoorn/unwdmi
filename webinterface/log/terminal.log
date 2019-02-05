@@ -1,0 +1,461 @@
+Workerman[public/index.php] start in DEBUG mode
+------------------------------------------- WORKERMAN -------------------------------------------
+Workerman version:3.5.18          PHP version:7.2.14-1+ubuntu16.04.1+deb.sury.org+1
+-------------------------------------------- WORKERS --------------------------------------------
+proto   user            worker          listen                     processes    status           
+tcp     root            PHPSocketIO     socketIO://0.0.0.0:8000    1             [OK]            
+-------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+new connection: 3f39996f0116d74103334df6!
+get_average_temperature
+get_honduras_regions
+get_average_temperature
+get_honduras_regions
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+Workerman[index.php] stopping ...
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+worker[2306] remains 2 connection(s)
+new connection: 8a06908e0116d7410071bfb1!
+get_honduras_markers
+result
+get_usa_markers
+get_station
+worker[2306] remains 1 connection(s)
+new connection: fb957a910116d7410375ba4d!
+Workerman[index.php] stopping ...
+Workerman[index.php] stopping ...
+Workerman[index.php] stopping ...
+worker[2306] remains 0 connection(s)
+Workerman[index.php] has been stopped
+Workerman[public/index.php] start in DEBUG mode
+------------------------------------------- WORKERMAN -------------------------------------------
+Workerman version:3.5.18          PHP version:7.2.14-1+ubuntu16.04.1+deb.sury.org+1
+-------------------------------------------- WORKERS --------------------------------------------
+proto   user            worker          listen                     processes    status           
+tcp     root            PHPSocketIO     socketIO://0.0.0.0:8000    1             [OK]            
+-------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+new connection: 5b7b34b90116d74105eb4159!
+get_honduras_markers
+result
+get_usa_markers
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_station
+get_station
+get_station
+get_station
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_honduras_regions
+get_average_temperature
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_honduras_regions
+get_average_temperature
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+Workerman[index.php] stopping ...
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+Workerman[index.php] stopping ...
+Workerman[index.php] stopping ...
+get_average_humidity
+Workerman[index.php] stopping ...
+Workerman[index.php] stopping ...
+Workerman[index.php] stopping ...
+Workerman[index.php] stopping ...
+get_honduras_regions
+get_average_temperature
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+worker[2452] remains 2 connection(s)
+worker[2452] remains 1 connection(s)
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+Workerman[public/index.php] start in DEBUG mode
+------------------------------------------- WORKERMAN -------------------------------------------
+Workerman version:3.5.18          PHP version:7.2.14-1+ubuntu16.04.1+deb.sury.org+1
+-------------------------------------------- WORKERS --------------------------------------------
+proto   user            worker          listen                     processes    status           
+tcp     root            PHPSocketIO     socketIO://0.0.0.0:8000    1             [OK]            
+-------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+new connection: 5133df2f0216d7410417e6cc!
+get_honduras_markers
+result
+get_usa_markers
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+new connection: 1497ea320216d741012bbadc!
+get_honduras_markers
+result
+get_usa_markers
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+new connection: 6058c1330216d741044cd07d!
+get_honduras_markers
+result
+get_usa_markers
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+Workerman[public/index.php] start in DEBUG mode
+------------------------------------------- WORKERMAN -------------------------------------------
+Workerman version:3.5.18          PHP version:7.2.14-1+ubuntu16.04.1+deb.sury.org+1
+-------------------------------------------- WORKERS --------------------------------------------
+proto   user            worker          listen                     processes    status           
+tcp     root            PHPSocketIO     socketIO://0.0.0.0:8000    1             [OK]            
+-------------------------------------------------------------------------------------------------
+Press Ctrl+C to stop. Start success.
+new connection: 18089c360716d74102e1b259!
+get_honduras_markers
+result
+get_usa_markers
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_station
+get_station
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_honduras_regions
+get_average_temperature
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+get_average_temperature
+get_honduras_regions
+get_average_humidity
+new connection: 7bbc17cc0716d74100957f2c!
+get_honduras_markers
+result
+get_usa_markers
+get_average_temperature
+get_honduras_regions
+get_average_humidity
