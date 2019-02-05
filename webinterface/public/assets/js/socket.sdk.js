@@ -16,6 +16,9 @@
 
     SocketSDK.prototype.request = function(command, param)
     {
+        let date = new Date();
+        window.requests.next(command);
+
         let requestID = Math.random();
         SocketSDK.socket.emit(command, [USER_TOKEN, requestID, param]);
 
@@ -100,14 +103,19 @@
         return SocketSDK.prototype.request('get_usa_stations');
     };
 
-    SocketSDK.prototype.getArchive = function ()
-    {
-        return SocketSDK.prototype.request('get_archive', arguments)
-    };
-
     SocketSDK.prototype.getMarkers = function ()
     {
         return SocketSDK.prototype.request('get_markers', arguments)
+    };
+
+    SocketSDK.prototype.getArchiveDayReport = function ()
+    {
+        return SocketSDK.prototype.request('get_archive_day_report', arguments)
+    };
+
+    SocketSDK.prototype.getArchiveAverages = function ()
+    {
+        return SocketSDK.prototype.request('get_archive_averages', arguments)
     };
 
     //init

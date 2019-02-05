@@ -15,7 +15,6 @@
     {
 
         $(document).ready(async function() {
-            console.log('test');
 
             let hondurasMarkers = await $.SocketSDK.getHondurasMarkers();
 
@@ -31,7 +30,7 @@
             console.log(hondurasMarkers);
 
             let markers = {};
-            $.map(hondurasMarkers, function(value, key) {
+            $.map(hondurasMarkers, function (value, key) {
                 let lat = value.latLng[0];
                 let lng = value.latLng[1];
 
@@ -54,16 +53,14 @@
                 markers[key] = marker;
             });
 
-            console.log(markers);
-
             $('#honduras-map-markers').vectorMap({
                 map: 'honduras',
-                normalizeFunction : 'polynomial',
-                hoverOpacity : 0.7,
-                hoverColor : false,
-                regionStyle : {
-                    initial : {
-                        fill : '#4c5667'
+                normalizeFunction: 'polynomial',
+                hoverOpacity: 0.7,
+                hoverColor: false,
+                regionStyle: {
+                    initial: {
+                        fill: '#4c5667'
                     }
                 },
                 markerStyle: {
@@ -72,7 +69,7 @@
                         'fill': '#003fa4',
                         'fill-opacity': 1,
                         'stroke': '#fff',
-                        'stroke-width' : 7,
+                        'stroke-width': 7,
                         'stroke-opacity': 0.4
                     },
                     hover: {
@@ -82,12 +79,12 @@
                     }
                 },
                 markers: markers,
-                backgroundColor : 'transparent',
-                onMarkerTipShow: async function(event, label, index) {
+                backgroundColor: 'transparent',
+                onMarkerTipShow: async function (event, label, index) {
                     try {
                         label.html(
-                            '<b>Station: </b>'+ index +'<br/>'+
-                            '<b>Temperature: </b></br>'+
+                            '<b>Station: </b>' + index + '<br/>' +
+                            '<b>Temperature: </b></br>' +
                             '<b>Humidity: </b></br>' +
                             '<b>Dewpoint: </b>'
                         );
@@ -95,14 +92,14 @@
                         let sation = await $.SocketSDK.getStation(index);
 
                         label.html(
-                            '<b>Station: </b>'+ index +'<br/>'+
-                            '<b>Temperature: </b>'+ sation.temperature +'°</br>'+
-                            '<b>Humidity: </b>'+ sation.humidity +'% </br>' +
-                            '<b>Dewpoint: </b>'+ sation.dewpoint +'°'
+                            '<b>Station: </b>' + index + '<br/>' +
+                            '<b>Temperature: </b>' + sation.temperature + '°</br>' +
+                            '<b>Humidity: </b>' + sation.humidity + '% </br>' +
+                            '<b>Dewpoint: </b>' + sation.dewpoint + '°'
                         );
                     } catch (e) {
                         label.html(
-                            '<b>Station: </b>'+ index +'<br/>'+
+                            '<b>Station: </b>' + index + '<br/>' +
                             '<b style="color: red;">' + e.message + '</b>'
                         );
                     }
@@ -111,12 +108,12 @@
 
             $('#america-map-markers').vectorMap({
                 map: 'us_aea_en',
-                normalizeFunction : 'polynomial',
-                hoverOpacity : 0.7,
-                hoverColor : false,
-                regionStyle : {
-                    initial : {
-                        fill : '#4c5667'
+                normalizeFunction: 'polynomial',
+                hoverOpacity: 0.7,
+                hoverColor: false,
+                regionStyle: {
+                    initial: {
+                        fill: '#4c5667'
                     }
                 },
                 markerStyle: {
@@ -125,7 +122,7 @@
                         'fill': '#003fa4',
                         'fill-opacity': 1,
                         'stroke': '#fff',
-                        'stroke-width' : 7,
+                        'stroke-width': 7,
                         'stroke-opacity': 0.4
                     },
                     hover: {
@@ -135,12 +132,12 @@
                     }
                 },
                 markers: await $.SocketSDK.getUSAMarkers(),
-                backgroundColor : 'transparent',
-                onMarkerTipShow: async function(event, label, index) {
+                backgroundColor: 'transparent',
+                onMarkerTipShow: async function (event, label, index) {
                     try {
                         label.html(
-                            '<b>Station: </b>'+ index +'<br/>'+
-                            '<b>Temperature: </b></br>'+
+                            '<b>Station: </b>' + index + '<br/>' +
+                            '<b>Temperature: </b></br>' +
                             '<b>Humidity: </b></br>' +
                             '<b>Dewpoint: </b>'
                         );
@@ -148,14 +145,14 @@
                         let sation = await $.SocketSDK.getStation(index);
 
                         label.html(
-                            '<b>Station: </b>'+ index +'<br/>'+
-                            '<b>Temperature: </b>'+ sation.temperature +'°</br>'+
-                            '<b>Humidity: </b>'+ sation.humidity +'% </br>' +
-                            '<b>Dewpoint: </b>'+ sation.dewpoint +'°'
+                            '<b>Station: </b>' + index + '<br/>' +
+                            '<b>Temperature: </b>' + sation.temperature + '°</br>' +
+                            '<b>Humidity: </b>' + sation.humidity + '% </br>' +
+                            '<b>Dewpoint: </b>' + sation.dewpoint + '°'
                         );
                     } catch (e) {
                         label.html(
-                            '<b>Station: </b>'+ index +'<br/>'+
+                            '<b>Station: </b>' + index + '<br/>' +
                             '<b style="color: red;">' + e.message + '</b>'
                         );
                     }

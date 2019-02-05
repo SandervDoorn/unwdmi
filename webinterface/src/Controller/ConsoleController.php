@@ -299,13 +299,22 @@ class ConsoleController
             return $stationArray;
         }));
 
-        $socket->on('get_archive', $this->socket($socket, function($stationId) use ($socket) {
-            echo "get_archive\n";
+        $socket->on('get_archive_day_report', $this->socket($socket, function($stationId) use ($socket) {
+            echo "get_archive_day_report\n";
 
             $date = new \DateTime();
             $date->setTimezone(new \DateTimeZone('Europe/Amsterdam'));
 
             return @file_get_contents(__DIR__ . '/../../../storageserver/weather-stations/' . $stationId . '/' . $date->format('d-m-Y') . '.csv', 'r');
+        }));
+
+        $socket->on('get_archive_averages', $this->socket($socket, function($stationId) use ($socket) {
+            echo "get_archive_averages\n";
+
+            $date = new \DateTime();
+            $date->setTimezone(new \DateTimeZone('Europe/Amsterdam'));
+
+            return @file_get_contents(__DIR__ . '/../../../storageserver/weather-stations/' . $stationId . '/averages.csv', 'r');
         }));
 
     }
@@ -365,9 +374,21 @@ class ConsoleController
             throw new \Exception('Unable to load stationmarkers');
         }
 
+        $availableStations = $this->getAvailableStations();
+
         $stationArray = [];
         foreach ($stations as $stationInfo) {
             if ($stationInfo['country'] != "'HONDURAS'") {
+                continue;
+            }
+
+            if (! in_array($stationInfo['id'], $availableStations)) {
+                continue;
+            }
+
+            try {
+                $this->getStation($stationInfo['id']);
+            } catch (\Exception $e) {
                 continue;
             }
 
