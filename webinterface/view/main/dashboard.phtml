@@ -1,0 +1,140 @@
+<link href="/plugins/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+<link href="/plugins/sweet-alert/sweetalert2.min.css" rel="stylesheet" />
+<link href="https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table-all.min.css" rel="stylesheet" />
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title">Welcome <?php echo $this->user->display_name ?>!</h4>
+            <ol class="breadcrumb float-right">
+                <li class="breadcrumb-item"><a href="#">Lacthosa</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-6 col-xl-4" id="temperature-card"></div>
+    <div class="col-lg-6 col-xl-4" id="humidity-card"></div>
+    <div class="col-lg-12 col-xl-4" id="measure-delay-card"></div>
+</div>
+<!-- end row -->
+
+
+<div class="row">
+
+    <div class="col-lg-6">
+        <div class="card-box">
+            <h4 class="header-title m-t-0"><a href="/map" class="text-dark">Station Visualisation Honduras</a></h4>
+            <p class="text-muted m-b-10 font-13" style="border-bottom: 1px solid #eee; padding-bottom:10px;">
+                Real-time visualisation of Honduras. Provided with temperature and humidity over stations.
+            </p>
+            <div id="honduras-map-markers" style="height: 300px;"></div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card-box">
+            <h4 class="header-title m-t-0"><a href="/map" class="text-dark">Station Visualisation USA</a></h4>
+            <p class="text-muted m-b-10 font-13" style="border-bottom: 1px solid #eee; padding-bottom:10px;">
+                Real-time visualisation of the United States of America. Provided with temperature and humidity over stations.
+            </p>
+            <div id="america-map-markers" style="height: 300px;"></div>
+        </div>
+    </div>
+
+</div>
+<!-- end row -->
+
+
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-box">
+            <h4 class="text-dark header-title m-t-0">Region Measurements</h4>
+            <p class="text-muted m-b-25 font-13">
+                The latest measurements, grouped by region
+            </p>
+
+            <div id="region-table"></div>
+        </div>
+    </div>
+    <!-- end col -8 -->
+
+    <div class="col-lg-4">
+
+        <a href="mailto:niels.doornbos@softenco.com?subject=Support Request" style="color: #4c5667">
+            <div class="card-box widget-user hoverable">
+                <div>
+                    <i class="fa fa-handshake-o float-left" style="font-size: 55px; margin-top: 10px"></i>
+                    <div class="wid-u-info">
+                        <h5 class="mt-0 m-b-5 font-16">Personal Solution Contact</h5>
+                        <small class="text-success"><b>Niels Doornbos</b></small>
+
+                        <p class="text-muted m-b-5 font-13">niels.doornbos@softenco.com</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href="mailto:redmar.bakker@softenco.com?subject=Support Request" style="color: #4c5667">
+            <div class="card-box widget-user hoverable">
+                <div>
+                    <i class="fa fa-question-circle-o float-left" style="font-size: 80px; margin: -5px 0px;"></i>
+                    <div class="wid-u-info">
+                        <h5 class="mt-0 m-b-5 font-16">Web support</h5>
+                        <small class="text-success"><b>Redmar Bakker</b></small>
+                        <p class="text-muted m-b-5 font-13">redmar.bakker@softenco.com</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href="mailto:martin.vinke@softenco.com?subject=Support Request" style="color: #4c5667">
+            <div class="card-box widget-user hoverable">
+                <div>
+                    <i class="fa fa-thermometer-empty float-left" style="font-size: 70px; margin-left: 16px"></i>
+                    <div class="wid-u-info">
+                        <h5 class="mt-0 m-b-5 font-16">Reliability Support</h5>
+                        <small class="text-success"><b>Martin Vinke</b></small>
+                        <p class="text-muted m-b-5 font-13">martin.vinke@softenco.com</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+        <a href="mailto:sander.van.doorn@softenco.com?subject=Support Request" style="color: #4c5667">
+            <div class="card-box widget-user hoverable">
+                <div>
+                    <i class="fa fa-file-archive-o float-left" style="font-size: 70px; margin-left: 7px"></i>
+                    <div class="wid-u-info">
+                        <h5 class="mt-0 m-b-5 font-16">Data Support (Archive)</h5>
+                        <small class="text-success"><b>Sander van Doorn</b></small>
+                        <p class="text-muted m-b-5 font-13">sander.van.doorn@softenco.com</p>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+    </div>
+
+</div>
+<!-- end row -->
+
+<!-- PLUGINS -->
+<?php \App\LayoutModel::appendScript('/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js') ?>
+<?php \App\LayoutModel::appendScript('/plugins/jvectormap/jquery-jvectormap-honduras.js') ?>
+<?php \App\LayoutModel::appendScript('/plugins/jvectormap/jquery-jvectormap-us-aea-en.js') ?>
+<?php \App\LayoutModel::appendScript('https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table.min.js') ?>
+<?php \App\LayoutModel::appendScript('/plugins/sweet-alert/sweetalert2.min.js') ?>
+
+<!-- COMPONENTS -->
+<?php \App\LayoutModel::appendScript('/assets/components/card.component.js', 0, 'text/babel') ?>
+<?php \App\LayoutModel::appendScript('/assets/components/region-table.component.js', 0, 'text/babel') ?>
+
+<!-- CONTROLLER -->
+<?php \App\LayoutModel::appendScript('/assets/pages/jquery.dashboard.js', 0, 'text/babel') ?>

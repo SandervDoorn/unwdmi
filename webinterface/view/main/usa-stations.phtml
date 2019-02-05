@@ -1,0 +1,44 @@
+<link href="/plugins/sweet-alert/sweetalert2.min.css" rel="stylesheet" />
+<link href="/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+<link href="/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+<link href="https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table-all.min.css" rel="stylesheet" type="text/css">
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <h4 class="page-title">Stations</h4>
+            <ol class="breadcrumb float-right">
+                <li class="breadcrumb-item"><a href="#">Lacthosa</a></li>
+                <li class="breadcrumb-item active">Stations</li>
+            </ol>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <h4 class="text-dark header-title m-t-0">Stations Honduras Measurements</h4>
+            <p class="text-muted m-b-25 font-13">
+                The latest measurements from stations in Honduras. Click on the row to download information.
+            </p>
+
+            <div id="station-table"></div>
+        </div>
+    </div>
+    <!-- end col -8 -->
+
+</div>
+<!-- end row -->
+
+<!-- PLUGINS -->
+<?php \App\LayoutModel::appendScript('https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table.min.js') ?>
+<?php \App\LayoutModel::appendScript('/plugins/sweet-alert/sweetalert2.min.js') ?>
+
+<!-- COMPONENTS -->
+<?php \App\LayoutModel::appendScript('/assets/components/station-table.component.js', 0, 'text/babel') ?>
+
+<!-- CONTROLLER -->
+<?php \App\LayoutModel::appendScript('/assets/pages/jquery.usa-stations.js', 0, 'text/babel') ?>
