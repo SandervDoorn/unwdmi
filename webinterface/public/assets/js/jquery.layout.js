@@ -12,8 +12,6 @@
     Layout.prototype.init = function()
     {
 
-        window.requests = new rxjs.Subject();
-
         ReactDOM.render(
             <SideBar />,
             document.getElementById('side-bar')

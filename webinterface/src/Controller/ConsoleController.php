@@ -29,6 +29,9 @@ class ConsoleController
     const HONDURAS_LONGITUDE_END = -83.2;
     const HONDURAS_LONGITUDE_RANGE = 3.1;
 
+    /*const STATION_DATA_FOLDER = __DIR__ . '/../../../storageserver/weather-stations/';*/
+    const STATION_DATA_FOLDER = '/home/ITV2G03/weather-station/storageserver/weather-stations/';
+
     /**
      * @var SocketIO
      * */
@@ -41,15 +44,15 @@ class ConsoleController
 
     public function __construct()
     {
-        $this->database = new Database(
+        /*$this->database = new Database(
             'localhost',
             'weather-project',
             'weather',
             'weather-project'
         );
-        $this->database->connect();
+        $this->database->connect();*/
 
-        $this->userService = new UserService($this->database);
+        $this->userService = new UserService();
     }
 
     public function index(Request $request, Response $response)
@@ -305,7 +308,7 @@ class ConsoleController
             $date = new \DateTime();
             $date->setTimezone(new \DateTimeZone('Europe/Amsterdam'));
 
-            return @file_get_contents(__DIR__ . '/../../../storageserver/weather-stations/' . $stationId . '/' . $date->format('d-m-Y') . '.csv', 'r');
+            return @file_get_contents(self::STATION_DATA_FOLDER . $stationId . '/' . $date->format('d-m-Y') . '.csv', 'r');
         }));
 
         $socket->on('get_archive_averages', $this->socket($socket, function($stationId) use ($socket) {
@@ -314,7 +317,7 @@ class ConsoleController
             $date = new \DateTime();
             $date->setTimezone(new \DateTimeZone('Europe/Amsterdam'));
 
-            return @file_get_contents(__DIR__ . '/../../../storageserver/weather-stations/' . $stationId . '/averages.csv', 'r');
+            return @file_get_contents(self::STATION_DATA_FOLDER . $stationId . '/averages.csv', 'r');
         }));
 
     }
@@ -436,7 +439,7 @@ class ConsoleController
 
     public function getAvailableStations()
     {
-        $stations = scandir(__DIR__ . '/../../../storageserver/weather-stations/');
+        $stations = scandir(self::STATION_DATA_FOLDER);
 
         foreach ($stations as $key => $station) {
             if ($station == '.' || $station == '..') {
@@ -452,7 +455,7 @@ class ConsoleController
         $date = new \DateTime();
         $date->setTimezone(new \DateTimeZone('Europe/Amsterdam'));
 
-        $csvData = @file_get_contents(__DIR__ . '/../../../storageserver/weather-stations/' . $stationId . '/' . $date->format('d-m-Y') . '.csv', 'r');
+        $csvData = @file_get_contents(self::STATION_DATA_FOLDER . $stationId . '/' . $date->format('d-m-Y') . '.csv', 'r');
 
         if ($csvData == null || $csvData == false) {
             throw new \Exception('Station not available.');

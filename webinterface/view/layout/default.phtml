@@ -57,7 +57,7 @@
             <!-- end content -->
 
             <footer class="footer">
-                <?php echo date('Y') ?> &copy; Softenco B.V. - <a href="https://www.softenco.com/" style="color: #fff;">Softenco.com</a>
+                <?php echo date('Y') ?> &copy; Streamline IT | Your Partner in Technology - <a href="https://www.Streamline-IT.com/" style="color: #fff;">Streamline-IT.com</a>
             </footer>
 
         </div>
@@ -73,6 +73,8 @@
     </div>
     <!-- END wrapper -->
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.4.0/rxjs.umd.min.js"></script>
+
     <script>
         var resizefunc = [];
 
@@ -81,6 +83,8 @@
                 NODE_ENV: "development"
             }
         };
+
+        window.requests = new rxjs.Subject();
 
     </script>
 
@@ -103,14 +107,13 @@
 
     <?php \App\LayoutModel::appendScript('https://unpkg.com/react@16/umd/react.development.js', -150) ?>
     <?php \App\LayoutModel::appendScript('https://unpkg.com/react-dom@16/umd/react-dom.development.js', -150) ?>
-    <?php \App\LayoutModel::appendScript('https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.4.0/rxjs.umd.min.js', -150) ?>
 
+    <?php \App\LayoutModel::appendScript('/assets/components/side-bar.component.js', -150, 'text/babel') ?>
+    <?php \App\LayoutModel::appendScript('/assets/js/jquery.layout.js', -150, 'text/babel') ?>
     <?php \App\LayoutModel::appendScript('/assets/js/socket.sdk.js', -150) ?>
 
     <!-- Counter Up  -->
     <?php \App\LayoutModel::appendScript('/plugins/waypoints/lib/jquery.waypoints.min.js', -100) ?>
-    <?php \App\LayoutModel::appendScript('/assets/components/side-bar.component.js', -100, 'text/babel') ?>
-    <?php \App\LayoutModel::appendScript('/assets/js/jquery.layout.js', -100, 'text/babel') ?>
 
     <!--Morris Chart-->
     <?php \App\LayoutModel::appendScript('/plugins/morris/morris.min.js', -50) ?>

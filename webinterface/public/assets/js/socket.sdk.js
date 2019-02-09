@@ -10,7 +10,7 @@
 
     SocketSDK.prototype.init = function(port)
     {
-        SocketSDK.socket = io('http://management.lacthosa.com:' + port);
+        SocketSDK.socket = io('http://52.166.192.171:' + port);
         SocketSDK.socket.on('disconnect', function() {});
     };
 

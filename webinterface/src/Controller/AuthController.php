@@ -23,15 +23,15 @@ class AuthController
 
     public function __construct()
     {
-        $this->database = new Database(
+        /*$this->database = new Database(
             'localhost',
             'weather-project',
             'weather',
             'weather-project'
         );
-        $this->database->connect();
+        $this->database->connect();*/
 
-        $this->userService = new UserService($this->database);
+        $this->userService = new UserService();
     }
 
     public function login(Request $request, Response $response)

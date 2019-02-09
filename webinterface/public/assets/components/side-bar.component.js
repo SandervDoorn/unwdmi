@@ -51,7 +51,7 @@ class SideBar extends React.Component {
     }
 
     render() {
-        let activities = this.state.activities.reverse();
+        let activities = this.state.activities;
 
         return (
             <div className="side-bar right-bar">

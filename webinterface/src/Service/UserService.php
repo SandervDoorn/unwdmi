@@ -20,7 +20,7 @@ class UserService
      * */
     private $database;
 
-    public function __construct($database)
+    public function __construct($database = null)
     {
         $this->database = $database;
     }

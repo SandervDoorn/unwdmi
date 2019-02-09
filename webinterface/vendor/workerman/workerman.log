@@ -1096,3 +1096,6 @@ Stack trace:
 2019-02-05 17:54:56 pid:4898 Workerman[index.php] stopping ...
 2019-02-05 17:54:56 pid:4898 Workerman[index.php] has been stopped
 2019-02-05 17:55:03 pid:4925 Workerman[public/index.php] start in DEBUG mode
+2019-02-05 21:18:15 pid:11234 Workerman[public/index.php] start in DEBUG mode
+2019-02-05 22:50:00 pid:11234 Workerman[index.php] stopping ...
+2019-02-05 22:50:00 pid:11234 Workerman[index.php] has been stopped
